@@ -6,9 +6,17 @@ EarthVision is a production-grade Earth observation and satellite image processi
 
 ## 📸 Application Interface Showcase
 
+### 🌍 Front Page — EarthVision Landing & Observation Console
+![EarthVision Front Page](screenshots/front_page_earthvision.png)
+*Landing page with interactive canvas orbit tracker, coordinate query console, live target presets, and scientific pipeline architecture.*
+
+---
+
+### 🛰️ Interactive 3D Globe & DIP Analysis Studio
+
 | 3D CesiumJS Earth Explorer | Interactive DIP Studio Workspace |
 |:---:|:---:|
-| ![Earth Explorer](stitch_orbitview_analyzer_landing_page/earthvision_earth_explorer_spacious/screen.png) | ![DIP Studio Workspace](stitch_orbitview_analyzer_landing_page/earthvision_digital_image_processing_workspace_clean_spacious/screen.png) |
+| ![Earth Explorer](screenshots/earth_explorer_globe.png) | ![DIP Studio Workspace](screenshots/dip_workspace_studio.png) |
 | *Full 360° virtual globe with live solar angles, diurnal shadow terminator, and coordinate lock* | *Dual-layer split comparison slider, live pixel inspection, 4-channel histograms & scientific metrics* |
 
 ---
