@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>EarthVision — DIP Workspace</title>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0e15; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(76, 215, 246, 0.4); }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4cd7f6",
+            "primary-container": "#06b6d4",
+            "on-primary": "#003640",
+            "on-primary-container": "#00424f",
+            "surface-panel": "#0f131b",
+            "surface-elevated": "#151a23",
+            "surface-border": "rgba(255, 255, 255, 0.08)",
+            "on-surface": "#dfe1f6",
+            "on-surface-muted": "#869397"
+          },
+          fontFamily: {
+            "headline": ["Plus Jakarta Sans", "sans-serif"],
+            "body": ["Inter", "sans-serif"],
+            "mono": ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-[#090e1c] font-body text-on-surface h-screen flex flex-col select-none overflow-hidden">
+
+  <!-- TOP APP BAR -->
+  <header class="h-14 bg-[#0F131B] border-b border-white/[0.08] px-4 flex items-center justify-between z-30 shrink-0">
+    <div class="flex items-center gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity">
+        <div class="w-7 h-7 rounded-md bg-primary/15 border border-primary/40 flex items-center justify-center text-primary">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+          </svg>
+        </div>
+        <span class="font-headline text-[15px] font-semibold tracking-tight text-white">EarthVision</span>
+      </a>
+      <div class="h-4 w-px bg-white/10"></div>
+      <div class="flex items-center gap-2 text-sm">
+        <a href="explorer.html" class="text-white/40 hover:text-white transition-colors text-[13px] flex items-center gap-1">
+          <span class="material-symbols-outlined text-[15px]">arrow_back</span>
+          <span>Earth Explorer</span>
+        </a>
+        <span class="text-white/30 text-xs">/</span>
+        <span class="text-white/40 text-[13px]">Swath:</span>
+        <span class="text-white/90 font-medium text-[13px]" id="swath-title">Selected AOI</span>
+        <span class="text-primary/70 text-xs font-mono px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20">// 8-bit RGB</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="flex items-center bg-[#151a23] rounded-lg p-0.5 border border-white/[0.08]">
+        <button class="w-8 h-8 rounded flex items-center justify-center text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors" id="btn-undo" title="Undo (Ctrl+Z)">
+          <span class="material-symbols-outlined text-[18px]">undo</span>
+        </button>
+        <button class="w-8 h-8 rounded flex items-center justify-center text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors" id="btn-redo" title="Redo (Ctrl+Shift+Z)">
+          <span class="material-symbols-outlined text-[18px]">redo</span>
+        </button>
+        <div class="h-4 w-px bg-white/10 my-auto mx-0.5"></div>
+        <button class="px-2.5 h-8 rounded flex items-center gap-1.5 text-xs text-white/70 hover:text-white hover:bg-white/[0.06] transition-colors" id="btn-reset" title="Reset All (R)">
+          <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+          <span>Reset</span>
+        </button>
+      </div>
+      <button class="h-8 px-3.5 rounded-lg bg-primary-container text-on-primary-container text-xs font-semibold flex items-center gap-1.5 hover:bg-primary transition-all shadow-sm" id="btn-export">
+        <span class="material-symbols-outlined text-[16px]">download</span>
+        <span>Download / Export</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN 3-COLUMN STUDIO WORKSPACE -->
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- FAR LEFT ICON SIDEBAR (56px) -->
+    <aside class="w-14 bg-[#0A0E15] border-r border-white/[0.08] flex flex-col items-center py-3 gap-2 shrink-0 select-none z-20">
+      <a href="index.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Home Landing">
+        <span class="material-symbols-outlined text-[20px]">home</span>
+      </a>
+      <a href="explorer.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Earth Explorer 3D Globe">
+        <span class="material-symbols-outlined text-[20px]">explore</span>
+      </a>
+      <a href="catalog.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Raster Catalog">
+        <span class="material-symbols-outlined text-[20px]">satellite_alt</span>
+      </a>
+      <a href="workspace.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-primary bg-primary/10 border border-primary/30 transition-colors" title="DIP Workspace">
+        <span class="material-symbols-outlined text-[20px]">grid_view</span>
+      </a>
+      <a href="history.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Processing History">
+        <span class="material-symbols-outlined text-[20px]">history</span>
+      </a>
+      <div class="mt-auto flex flex-col items-center gap-2">
+        <a href="settings.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Settings">
+          <span class="material-symbols-outlined text-[20px]">tune</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- LEFT COLUMN: DIP Algorithm Toolbox (290px) -->
+    <aside class="w-[290px] shrink-0 bg-[#0F131B] border-r border-white/[0.08] flex flex-col h-full overflow-hidden select-none">
+      <div class="p-3.5 border-b border-white/[0.08] flex items-center justify-between">
+        <span class="text-xs font-semibold uppercase tracking-wider text-white/70">24 DIP Algorithms</span>
+        <span class="text-[11px] font-mono text-primary px-1.5 py-0.5 rounded bg-primary/10 border border-primary/20" id="status-badge">Ready</span>
+      </div>
+
+      <!-- Accordions Container -->
+      <div class="flex-1 overflow-y-auto p-3 space-y-2">
+
+        <!-- Accordion Group 1: Radiometric Enhancement (OPEN) -->
+        <div class="bg-[#151A23] rounded-lg border border-white/[0.08] overflow-hidden">
+          <div class="px-3.5 py-3 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition-colors accordion-header">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[18px]">brightness_medium</span>
+              <span class="text-xs font-medium text-white">Radiometric Enhancement</span>
+            </div>
+            <span class="material-symbols-outlined text-white/40 text-[18px] accordion-icon">expand_less</span>
+          </div>
+          <div class="px-3.5 pb-4 pt-1 space-y-3.5 border-t border-white/[0.06] accordion-content">
+            <!-- Brightness -->
+            <div>
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Brightness</span>
+                <span class="font-mono text-primary" id="val-brightness">0</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-brightness" max="100" min="-100" type="range" value="0"/>
+              <button onclick="window.dipStudio.runAlgorithm('brightness', { value: parseInt(document.getElementById('slider-brightness').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Brightness</button>
+            </div>
+            <!-- Contrast -->
+            <div>
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Contrast</span>
+                <span class="font-mono text-primary" id="val-contrast">1.0x</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-contrast" max="3.0" min="0.2" step="0.1" type="range" value="1.0"/>
+              <button onclick="window.dipStudio.runAlgorithm('contrast', { value: parseFloat(document.getElementById('slider-contrast').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Contrast</button>
+            </div>
+            <!-- Gamma -->
+            <div>
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Gamma Correction</span>
+                <span class="font-mono text-primary" id="val-gamma">1.00</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-gamma" max="3.0" min="0.2" step="0.05" type="range" value="1.0"/>
+              <button onclick="window.dipStudio.runAlgorithm('gamma', { gamma: parseFloat(document.getElementById('slider-gamma').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Gamma</button>
+            </div>
+            <!-- Hist Eq -->
+            <div class="pt-1 border-t border-white/5">
+              <button onclick="window.dipStudio.runAlgorithm('hist_eq', {})" class="w-full py-1.5 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 flex items-center justify-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-[14px] text-primary">equalizer</span>
+                <span>Histogram Equalization (YCrCb)</span>
+              </button>
+            </div>
+            <!-- CLAHE -->
+            <div>
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>CLAHE Clip Limit</span>
+                <span class="font-mono text-primary" id="val-clahe-clip">2.0</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-clahe-clip" max="10.0" min="1.0" step="0.5" type="range" value="2.0"/>
+              <div class="flex justify-between text-xs text-white/70 mt-2 mb-1">
+                <span>Tile Grid</span>
+                <span class="font-mono text-primary" id="val-clahe-tile">8x8</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-clahe-tile" max="16" min="2" step="1" type="range" value="8"/>
+              <button onclick="window.dipStudio.runAlgorithm('clahe', { clip: parseFloat(document.getElementById('slider-clahe-clip').value), tile: parseInt(document.getElementById('slider-clahe-tile').value) })" class="w-full mt-2 py-1.5 bg-primary-container hover:bg-primary text-on-primary-container font-semibold text-xs rounded flex items-center justify-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-[14px]">auto_fix_high</span>
+                <span>Apply CLAHE</span>
+              </button>
+            </div>
+            <!-- Contrast Stretch -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Percentile Stretch Low</span>
+                <span class="font-mono text-primary" id="val-stretch-low">2%</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-stretch-low" max="49" min="0" step="1" type="range" value="2"/>
+              <div class="flex justify-between text-xs text-white/70 mt-2 mb-1">
+                <span>Percentile Stretch High</span>
+                <span class="font-mono text-primary" id="val-stretch-high">98%</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-stretch-high" max="100" min="51" step="1" type="range" value="98"/>
+              <button onclick="window.dipStudio.runAlgorithm('contrast_stretch', { low: parseFloat(document.getElementById('slider-stretch-low').value), high: parseFloat(document.getElementById('slider-stretch-high').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Contrast Stretch</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Group 2: Spatial Convolution (COLLAPSED) -->
+        <div class="bg-[#151A23] rounded-lg border border-white/[0.08] overflow-hidden">
+          <div class="px-3.5 py-3 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition-colors accordion-header">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-white/50 text-[18px]">blur_on</span>
+              <span class="text-xs font-medium text-white/80">Spatial Filters</span>
+            </div>
+            <span class="material-symbols-outlined text-white/40 text-[18px] accordion-icon">expand_more</span>
+          </div>
+          <div class="px-3.5 pb-4 pt-1 space-y-3.5 border-t border-white/[0.06] accordion-content hidden">
+            <!-- Gaussian Blur -->
+            <div>
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Gaussian Kernel Size</span>
+                <span class="font-mono text-primary" id="val-gaussian-k">5px</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-gaussian-k" max="31" min="3" step="2" type="range" value="5"/>
+              <div class="flex justify-between text-xs text-white/70 mt-2 mb-1">
+                <span>Gaussian Sigma (0=Auto)</span>
+                <span class="font-mono text-primary" id="val-gaussian-s">0.0</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-gaussian-s" max="10.0" min="0.0" step="0.5" type="range" value="0.0"/>
+              <button onclick="window.dipStudio.runAlgorithm('gaussian', { ksize: parseInt(document.getElementById('slider-gaussian-k').value), sigma: parseFloat(document.getElementById('slider-gaussian-s').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Gaussian Blur</button>
+            </div>
+            <!-- Median Filter -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Median Denoise Kernel</span>
+                <span class="font-mono text-primary" id="val-median-k">5px</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-median-k" max="15" min="3" step="2" type="range" value="5"/>
+              <button onclick="window.dipStudio.runAlgorithm('median', { ksize: parseInt(document.getElementById('slider-median-k').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Median Denoise</button>
+            </div>
+            <!-- Mean Box Blur -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Mean Box Filter Kernel</span>
+                <span class="font-mono text-primary" id="val-mean-k">5px</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-mean-k" max="31" min="3" step="2" type="range" value="5"/>
+              <button onclick="window.dipStudio.runAlgorithm('mean', { ksize: parseInt(document.getElementById('slider-mean-k').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Mean Blur</button>
+            </div>
+            <!-- Unsharp Mask Sharpen -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Sharpen Amount</span>
+                <span class="font-mono text-primary" id="val-sharpen-a">1.0</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-sharpen-a" max="5.0" min="0.0" step="0.2" type="range" value="1.0"/>
+              <button onclick="window.dipStudio.runAlgorithm('sharpen', { amount: parseFloat(document.getElementById('slider-sharpen-a').value), sigma: 2.0 })" class="w-full mt-1.5 py-1.5 bg-primary-container hover:bg-primary text-on-primary-container font-semibold text-xs rounded flex items-center justify-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-[14px]">details</span>
+                <span>Apply Unsharp Sharpen</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Group 3: Edge & Feature Extraction (COLLAPSED) -->
+        <div class="bg-[#151A23] rounded-lg border border-white/[0.08] overflow-hidden">
+          <div class="px-3.5 py-3 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition-colors accordion-header">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-white/50 text-[18px]">grain</span>
+              <span class="text-xs font-medium text-white/80">Edge &amp; Feature Extraction</span>
+            </div>
+            <span class="material-symbols-outlined text-white/40 text-[18px] accordion-icon">expand_more</span>
+          </div>
+          <div class="px-3.5 pb-4 pt-1 space-y-3.5 border-t border-white/[0.06] accordion-content hidden">
+            <!-- Sobel -->
+            <div>
+              <label class="text-[11px] text-white/50 block mb-1">Sobel Kernel</label>
+              <select id="select-sobel-k" class="w-full bg-[#0F131B] border border-white/[0.08] text-white/90 text-xs px-2.5 py-1.5 rounded outline-none mb-1.5">
+                <option value="1">1x1</option>
+                <option value="3" selected>3x3 (Standard)</option>
+                <option value="5">5x5</option>
+                <option value="7">7x7</option>
+              </select>
+              <button onclick="window.dipStudio.runAlgorithm('sobel', { ksize: parseInt(document.getElementById('select-sobel-k').value) })" class="w-full py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Compute Sobel Gradient</button>
+            </div>
+            <!-- Canny -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Canny Low Threshold</span>
+                <span class="font-mono text-primary" id="val-canny-low">100</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-canny-low" max="255" min="0" step="1" type="range" value="100"/>
+              <div class="flex justify-between text-xs text-white/70 mt-2 mb-1">
+                <span>Canny High Threshold</span>
+                <span class="font-mono text-primary" id="val-canny-high">200</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-canny-high" max="255" min="0" step="1" type="range" value="200"/>
+              <button onclick="window.dipStudio.runAlgorithm('canny', { low: parseInt(document.getElementById('slider-canny-low').value), high: parseInt(document.getElementById('slider-canny-high').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Detect Canny Edges</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Group 4: Land Cover Segmentation (COLLAPSED) -->
+        <div class="bg-[#151A23] rounded-lg border border-white/[0.08] overflow-hidden">
+          <div class="px-3.5 py-3 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition-colors accordion-header">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-white/50 text-[18px]">pie_chart</span>
+              <span class="text-xs font-medium text-white/80">Land Cover Segmentation</span>
+            </div>
+            <span class="material-symbols-outlined text-white/40 text-[18px] accordion-icon">expand_more</span>
+          </div>
+          <div class="px-3.5 pb-4 pt-1 space-y-3.5 border-t border-white/[0.06] accordion-content hidden">
+            <!-- Binary Threshold -->
+            <div>
+              <label class="text-[11px] text-white/50 block mb-1">Method</label>
+              <select id="select-thresh-method" class="w-full bg-[#0F131B] border border-white/[0.08] text-white/90 text-xs px-2.5 py-1.5 rounded outline-none mb-2">
+                <option value="otsu" selected>Otsu Auto-Threshold</option>
+                <option value="manual">Manual Cutoff</option>
+              </select>
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Cutoff Value (Manual)</span>
+                <span class="font-mono text-primary" id="val-thresh-val">127</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-thresh-val" max="255" min="0" step="1" type="range" value="127"/>
+              <button onclick="window.dipStudio.runAlgorithm('gray_threshold', { method: document.getElementById('select-thresh-method').value, value: parseInt(document.getElementById('slider-thresh-val').value) })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Binary Threshold</button>
+            </div>
+            <!-- Adaptive Threshold -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Adaptive Block Size</span>
+                <span class="font-mono text-primary" id="val-ad-block">35</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-ad-block" max="99" min="3" step="2" type="range" value="35"/>
+              <div class="flex justify-between text-xs text-white/70 mt-2 mb-1">
+                <span>C Offset</span>
+                <span class="font-mono text-primary" id="val-ad-c">5</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-ad-c" max="20" min="-20" step="1" type="range" value="5"/>
+              <button onclick="window.dipStudio.runAlgorithm('adaptive_threshold', { block: parseInt(document.getElementById('slider-ad-block').value), c: parseFloat(document.getElementById('slider-ad-c').value), method: 'gaussian' })" class="w-full mt-1.5 py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Apply Adaptive Threshold</button>
+            </div>
+            <!-- K-Means Clustering -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Clusters (K)</span>
+                <span class="font-mono text-primary" id="val-kmeans-k">k=4</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-kmeans-k" max="8" min="2" step="1" type="range" value="4"/>
+              <button onclick="window.dipStudio.runAlgorithm('kmeans', { k: parseInt(document.getElementById('slider-kmeans-k').value) })" class="w-full mt-2 py-1.5 bg-primary-container hover:bg-primary text-on-primary-container font-semibold text-xs rounded flex items-center justify-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-[14px]">palette</span>
+                <span>Run K-Means Clustering</span>
+              </button>
+            </div>
+            <!-- Otsu Region Accent -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="flex items-center justify-between text-xs text-white/70 mb-1.5">
+                <span>Invert Otsu Region</span>
+                <input type="checkbox" id="toggle-region-invert" class="accent-primary cursor-pointer"/>
+              </div>
+              <button onclick="window.dipStudio.runAlgorithm('region_highlight', { invert: document.getElementById('toggle-region-invert').checked })" class="w-full py-1 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors">Highlight Otsu Region</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Group 5: Morphological Analysis (COLLAPSED) -->
+        <div class="bg-[#151A23] rounded-lg border border-white/[0.08] overflow-hidden">
+          <div class="px-3.5 py-3 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition-colors accordion-header">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-white/50 text-[18px]">filter_b_and_w</span>
+              <span class="text-xs font-medium text-white/80">Morphological Analysis</span>
+            </div>
+            <span class="material-symbols-outlined text-white/40 text-[18px] accordion-icon">expand_more</span>
+          </div>
+          <div class="px-3.5 pb-4 pt-1 space-y-3.5 border-t border-white/[0.06] accordion-content hidden">
+            <!-- Structuring Element Kernel Size & Iterations -->
+            <div>
+              <div class="flex justify-between text-xs text-white/70 mb-1">
+                <span>Kernel Structuring Element</span>
+                <span class="font-mono text-primary" id="val-morph-k">3px</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-morph-k" max="15" min="3" step="2" type="range" value="3"/>
+              
+              <div class="flex justify-between text-xs text-white/70 mt-2 mb-1">
+                <span>Iterations</span>
+                <span class="font-mono text-primary" id="val-morph-iters">1 iter</span>
+              </div>
+              <input class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" id="slider-morph-iters" max="5" min="1" step="1" type="range" value="1"/>
+            </div>
+
+            <!-- Erosion & Dilation Action Buttons -->
+            <div class="pt-1 border-t border-white/5 space-y-2">
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="window.dipStudio.runAlgorithm('erosion', { ksize: parseInt(document.getElementById('slider-morph-k').value), iterations: parseInt(document.getElementById('slider-morph-iters').value) })" class="w-full py-1.5 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors flex items-center justify-center gap-1">
+                  <span class="material-symbols-outlined text-[14px] text-primary">compress</span>
+                  <span>Erosion</span>
+                </button>
+                <button onclick="window.dipStudio.runAlgorithm('dilation', { ksize: parseInt(document.getElementById('slider-morph-k').value), iterations: parseInt(document.getElementById('slider-morph-iters').value) })" class="w-full py-1.5 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors flex items-center justify-center gap-1">
+                  <span class="material-symbols-outlined text-[14px] text-primary">expand</span>
+                  <span>Dilation</span>
+                </button>
+              </div>
+
+              <!-- Opening & Closing Action Buttons -->
+              <div class="grid grid-cols-2 gap-2">
+                <button onclick="window.dipStudio.runAlgorithm('morph_open', { ksize: parseInt(document.getElementById('slider-morph-k').value) })" class="w-full py-1.5 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors flex items-center justify-center gap-1" title="Erosion followed by Dilation (removes noise/islands)">
+                  <span class="material-symbols-outlined text-[14px] text-primary">brightness_low</span>
+                  <span>Opening</span>
+                </button>
+                <button onclick="window.dipStudio.runAlgorithm('morph_close', { ksize: parseInt(document.getElementById('slider-morph-k').value) })" class="w-full py-1.5 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors flex items-center justify-center gap-1" title="Dilation followed by Erosion (fills holes/bridges gaps)">
+                  <span class="material-symbols-outlined text-[14px] text-primary">brightness_high</span>
+                  <span>Closing</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accordion Group 6: Spectral Radiometry & Bands (COLLAPSED) -->
+        <div class="bg-[#151A23] rounded-lg border border-white/[0.08] overflow-hidden">
+          <div class="px-3.5 py-3 flex items-center justify-between cursor-pointer hover:bg-white/[0.02] transition-colors accordion-header">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-white/50 text-[18px]">insights</span>
+              <span class="text-xs font-medium text-white/80">Spectral Radiometry &amp; Bands</span>
+            </div>
+            <span class="material-symbols-outlined text-white/40 text-[18px] accordion-icon">expand_more</span>
+          </div>
+          <div class="px-3.5 pb-4 pt-1 space-y-3.5 border-t border-white/[0.06] accordion-content hidden">
+            <!-- Grayscale -->
+            <div>
+              <button onclick="window.dipStudio.runAlgorithm('grayscale', {})" class="w-full py-1.5 bg-white/5 hover:bg-white/10 text-white text-[11px] rounded border border-white/10 transition-colors flex items-center justify-center gap-1.5">
+                <span class="material-symbols-outlined text-[14px] text-primary">gradient</span>
+                <span>Convert to Grayscale</span>
+              </button>
+            </div>
+            <!-- RGB Channel Extraction -->
+            <div class="pt-1 border-t border-white/5">
+              <label class="text-[11px] text-white/50 block mb-1">Select RGB Channel</label>
+              <div class="grid grid-cols-3 gap-1.5">
+                <button onclick="window.dipStudio.runAlgorithm('rgb_channel', { channel: 'r' })" class="py-1 bg-red-500/15 hover:bg-red-500/25 text-red-300 border border-red-500/30 rounded text-xs font-mono">Red</button>
+                <button onclick="window.dipStudio.runAlgorithm('rgb_channel', { channel: 'g' })" class="py-1 bg-green-500/15 hover:bg-green-500/25 text-green-300 border border-green-500/30 rounded text-xs font-mono">Green</button>
+                <button onclick="window.dipStudio.runAlgorithm('rgb_channel', { channel: 'b' })" class="py-1 bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 rounded text-xs font-mono">Blue</button>
+              </div>
+            </div>
+            <!-- Vegetation Proxy -->
+            <div class="pt-1 border-t border-white/5">
+              <div class="text-[11px] text-white/50 mb-1">Vegetation (2G - R - B)</div>
+              <button onclick="window.dipStudio.runAlgorithm('vegetation_proxy', {})" class="w-full py-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 font-medium text-xs rounded border border-emerald-500/30 flex items-center justify-center gap-1.5 transition-colors">
+                <span class="material-symbols-outlined text-[14px]">psychology_alt</span>
+                <span>Vegetation (RGB proxy, not NDVI)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Execution Chain Stack -->
+        <div class="bg-[#151A23] rounded-lg border border-white/[0.08] p-3 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-white">Chained Pipeline</span>
+            <span class="text-[10px] text-white/40 font-mono">Sequential</span>
+          </div>
+          <div id="pipeline-list" class="space-y-1.5">
+            <div class="p-2 text-center text-xs text-white/30 border border-dashed border-white/10 rounded">
+              No filters applied yet.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- CENTER COLUMN: Dominant Comparison Canvas (>60% width) -->
+    <main class="flex-1 bg-[#0A0E15] relative overflow-hidden flex flex-col">
+      <!-- Canvas Frame Container -->
+      <div class="relative flex-1 w-full h-full select-none overflow-hidden cursor-crosshair" id="viewer-container">
+        <!-- Layer 1: Processed Satellite (Base) -->
+        <div class="absolute inset-0 w-full h-full bg-contain bg-center bg-no-repeat transition-all duration-75" id="processed-layer"></div>
+        <!-- Layer 2: Raw Satellite (Split clipped) -->
+        <div class="absolute inset-0 w-full h-full bg-contain bg-center bg-no-repeat" id="raw-layer" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0% 100%);"></div>
+
+        <!-- Top Floating Viewport Labels -->
+        <div class="absolute top-4 left-4 pointer-events-none bg-[#0F131B]/85 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/[0.08] flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+          <span class="text-[11px] font-medium text-white/80" id="label-raw">Source: Esri World Imagery (Original)</span>
+        </div>
+        <div class="absolute top-4 right-4 pointer-events-none bg-[#0F131B]/85 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/[0.08] flex items-center gap-2">
+          <span class="text-[11px] font-medium text-white/90" id="label-processed">Original Unprocessed</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+        </div>
+
+        <!-- Draggable Comparison Split Slider Divider -->
+        <div class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-primary cursor-ew-resize z-20" id="split-slider-line">
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-[#0F131B] border border-primary flex items-center justify-center text-primary shadow-lg">
+            <span class="material-symbols-outlined text-[16px]">drag_indicator</span>
+          </div>
+        </div>
+
+        <!-- Floating Controls Pill (Compare mode, zoom, download) -->
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-auto bg-[#0F131B]/85 backdrop-blur-md px-2 py-1 rounded-full border border-white/[0.08] flex items-center gap-1.5 shadow-lg">
+          <button class="px-2.5 py-1 rounded-full text-xs font-medium text-primary hover:bg-white/[0.06] flex items-center gap-1.5 transition-colors" id="toggle-compare">
+            <span class="material-symbols-outlined text-[15px]">compare</span>
+            <span id="compare-mode-label">Split View</span>
+          </button>
+          <div class="h-3 w-px bg-white/10"></div>
+          <button class="w-7 h-7 rounded-full text-white/70 hover:text-white flex items-center justify-center transition-colors" id="btn-zoom-out" title="Zoom Out (-)">
+            <span class="material-symbols-outlined text-[16px]">remove</span>
+          </button>
+          <button class="px-2 h-7 rounded-full text-[11px] font-mono text-white/70 hover:text-white flex items-center justify-center transition-colors" id="btn-zoom-reset" title="Reset Zoom">
+            100%
+          </button>
+          <button class="w-7 h-7 rounded-full text-white/70 hover:text-white flex items-center justify-center transition-colors" id="btn-zoom-in" title="Zoom In (+)">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+          </button>
+          <div class="h-3 w-px bg-white/10"></div>
+          <button onclick="window.dipStudio.downloadImage('processed')" class="px-2.5 py-1 rounded-full text-xs font-medium bg-primary/15 text-primary hover:bg-primary/25 border border-primary/30 flex items-center gap-1 transition-colors" title="Download Processed Raster (PNG)">
+            <span class="material-symbols-outlined text-[15px]">download</span>
+            <span>Download</span>
+          </button>
+        </div>
+
+        <!-- Live Cursor Pixel Coordinates & DN readout -->
+        <div class="absolute bottom-3 left-4 pointer-events-none bg-[#0F131B]/85 backdrop-blur-md px-3 py-1.5 rounded border border-white/[0.08] flex items-center gap-3 font-mono text-[11px] text-white/70" id="hover-coords">
+          <span>LAT: 25.1972°</span>
+          <span>LON: 55.2744°</span>
+          <span class="text-primary">RGB: [---, ---, ---]</span>
+        </div>
+
+        <!-- Bottom-Right Quick Download Floating Action Button -->
+        <div class="absolute bottom-3 right-4 pointer-events-auto flex items-center gap-2">
+          <button onclick="window.dipStudio.downloadImage('processed')" class="px-3.5 py-1.5 rounded-lg bg-primary-container text-on-primary-container font-semibold text-xs flex items-center gap-1.5 hover:bg-primary shadow-[0_0_16px_rgba(6,182,212,0.35)] transition-all active:scale-95" title="Download Processed Image (PNG)">
+            <span class="material-symbols-outlined text-[16px]">download</span>
+            <span>Download Processed Image</span>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- RIGHT COLUMN: Diagnostics & Inspector (300px) -->
+    <aside class="w-[300px] shrink-0 bg-[#0F131B] border-l border-white/[0.08] flex flex-col h-full overflow-y-auto select-none p-4 gap-4">
+      
+      <!-- Section 1: Radiometric Histogram -->
+      <div class="bg-[#151A23] rounded-lg border border-white/[0.08] p-3.5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[18px]">bar_chart</span>
+            <span class="text-xs font-medium text-white">Radiometric Histogram</span>
+          </div>
+          <span class="text-[11px] font-mono text-white/40">DN: 0-255</span>
+        </div>
+        <div class="w-full h-24 bg-[#0A0E15] rounded p-1.5 relative overflow-hidden flex items-end border border-white/[0.04]">
+          <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 256 100" id="histogram-svg">
+            <line stroke="rgba(255,255,255,0.06)" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="256" y1="30" y2="30"></line>
+            <line stroke="rgba(255,255,255,0.06)" stroke-dasharray="2 2" stroke-width="0.5" x1="0" x2="256" y1="65" y2="65"></line>
+            <path d="M0,98 Q30,95 60,65 T120,40 T180,75 T256,98 L256,100 L0,100 Z" fill="rgba(239, 68, 68, 0.2)" stroke="#ef4444" stroke-width="1"></path>
+            <path d="M0,99 Q40,85 80,30 T150,55 T210,80 T256,99 L256,100 L0,100 Z" fill="rgba(34, 197, 94, 0.2)" stroke="#22c55e" stroke-width="1"></path>
+            <path d="M0,100 Q20,90 70,70 T130,20 T190,65 T256,100 L256,100 L0,100 Z" fill="rgba(77, 163, 255, 0.2)" stroke="#4DA3FF" stroke-width="1"></path>
+          </svg>
+        </div>
+        <div class="flex items-center justify-between mt-2.5 text-[11px] font-mono text-white/50">
+          <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-red-500"></span><span>Red</span></div>
+          <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-500"></span><span>Green</span></div>
+          <div class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><span>Blue</span></div>
+        </div>
+      </div>
+
+      <!-- Section 2: Raster Metrics -->
+      <div class="bg-[#151A23] rounded-lg border border-white/[0.08] p-3.5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-medium text-white">Raster Metrics</span>
+          <span class="text-[11px] font-mono text-white/40">8-bit RGB</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 font-mono">
+          <div class="bg-[#0F131B] p-2 rounded border border-white/[0.04]">
+            <span class="text-[10px] text-white/40 block mb-0.5">Mean DN</span>
+            <span class="text-xs text-white font-medium" id="stat-mean">---</span>
+          </div>
+          <div class="bg-[#0F131B] p-2 rounded border border-white/[0.04]">
+            <span class="text-[10px] text-white/40 block mb-0.5">Std Dev</span>
+            <span class="text-xs text-white font-medium" id="stat-std">---</span>
+          </div>
+          <div class="bg-[#0F131B] p-2 rounded border border-white/[0.04]">
+            <span class="text-[10px] text-white/40 block mb-0.5">PSNR (S/N)</span>
+            <span class="text-xs text-primary font-medium" id="stat-psnr">---</span>
+          </div>
+          <div class="bg-[#0F131B] p-2 rounded border border-white/[0.04]">
+            <span class="text-[10px] text-white/40 block mb-0.5">SSIM</span>
+            <span class="text-xs text-white font-medium" id="stat-ssim">---</span>
+          </div>
+          <div class="bg-[#0F131B] p-2 rounded border border-white/[0.04]">
+            <span class="text-[10px] text-white/40 block mb-0.5">Entropy</span>
+            <span class="text-xs text-white font-medium" id="stat-entropy">---</span>
+          </div>
+          <div class="bg-[#0F131B] p-2 rounded border border-white/[0.04]">
+            <span class="text-[10px] text-white/40 block mb-0.5">Dynamic Range</span>
+            <span class="text-xs text-white font-medium" id="stat-dynamic">---</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Land Cover Partitions -->
+      <div class="bg-[#151A23] rounded-lg border border-white/[0.08] p-3.5">
+        <div class="flex items-center justify-between mb-2.5">
+          <span class="text-xs font-medium text-white">Class Partitions</span>
+          <span class="text-[11px] font-mono text-white/40">K-Means Model</span>
+        </div>
+        <div id="partitions-container" class="space-y-2 text-xs">
+          <div class="py-4 text-center text-xs text-white/30 border border-dashed border-white/5 rounded">
+            Run K-Means Clustering to extract land cover partitions.
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 4: Algorithm Scientific Notes (Study Guide) -->
+      <div class="bg-[#151A23] rounded-lg border border-white/[0.08] p-3.5 space-y-2.5" id="algo-theory-card">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-amber-400 text-[17px]">school</span>
+            <span class="text-xs font-semibold text-white">Algorithm Scientific Notes</span>
+          </div>
+          <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20" id="theory-algo-badge">STUDY MODE</span>
+        </div>
+        
+        <div class="space-y-2 text-[12px] leading-relaxed">
+          <div class="font-medium text-primary text-[13px]" id="theory-title">Baseline Optical Satellite Imagery</div>
+          <p class="text-white/70" id="theory-desc">
+            Raw optical remote sensing satellite data calibrated to 8-bit digital numbers [0–255] per RGB channel. Select and apply any processing module from the left panel to inspect its mathematical formulation, remote sensing purpose, and viva explanation.
+          </p>
+          <div class="p-2 rounded bg-[#0A0E15] border border-white/[0.05] font-mono text-[11px] text-white/80" id="theory-formula">
+            <span class="text-white/40 block text-[9px] uppercase tracking-wider mb-0.5">Mathematical Principle:</span>
+            <span>f(x, y) ∈ [0, 255]³ (True-Color RGB Matrix)</span>
+          </div>
+          <div class="p-2 rounded bg-primary/5 border border-primary/10 text-[11px] text-primary/90" id="theory-application">
+            <span class="font-semibold block text-[10px] uppercase text-primary/70 mb-0.5">Remote Sensing Purpose:</span>
+            <span>Ground truth reference for calculating PSNR (fidelity) and SSIM (structural retention).</span>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- App Core Scripts with Cache Buster -->
+  <script src="js/state.js?v=2.6.0"></script>
+  <script src="js/api.js?v=2.6.0"></script>
+  <script src="js/dip-workspace.js?v=2.6.0"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      window.dipStudio = new window.DIPStudio();
+      window.dipStudio.init();
+    });
+  </script>
+</body>
+</html>

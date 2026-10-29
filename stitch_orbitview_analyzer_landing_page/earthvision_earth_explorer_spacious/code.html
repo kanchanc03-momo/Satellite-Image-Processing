@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<title>EarthVision — Earth Explorer</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#0a0d12",
+            "surface-panel": "#0f131a",
+            "surface-elevated": "#151a23",
+            "surface-border": "rgba(255, 255, 255, 0.08)",
+            "on-surface": "#dfe2ec",
+            "on-surface-muted": "#8a919d",
+            "accent": "#4da3ff",
+            "accent-muted": "#1e3a5f",
+            "accent-subtle": "rgba(77, 163, 255, 0.12)"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: #0a0d12;
+        color: #dfe2ec;
+        font-family: 'Inter', sans-serif;
+        overflow: hidden;
+      }
+    }
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f131a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased h-screen flex flex-col select-none">
+<!-- TOP APP BAR (Minimal 56px) -->
+<header class="h-14 border-b border-surface-border bg-surface-panel/95 backdrop-blur-md px-6 flex items-center justify-between z-40 flex-shrink-0">
+<div class="flex items-center gap-6">
+<!-- Logo & Version -->
+<a href="../earthvision_explore_earth._process_intelligence/code.html" class="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity">
+<div class="w-7 h-7 rounded-md bg-accent/15 border border-accent/40 flex items-center justify-center text-accent">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-semibold text-sm tracking-tight text-white">EarthVision</span>
+<span class="text-[11px] font-mono text-on-surface-muted bg-white/5 px-1.5 py-0.5 rounded border border-surface-border">v2.4</span>
+</div>
+</a>
+<div class="h-4 w-[1px] bg-surface-border"></div>
+<!-- Clean Context Breadcrumb -->
+<div class="flex items-center gap-2 text-xs">
+<span class="text-on-surface-muted">Earth Explorer</span>
+<span class="text-on-surface-muted/50">/</span>
+<span class="text-on-surface font-medium" id="currentBreadcrumbLocation">Dubai Coastal Archipelagos</span>
+<span class="font-mono text-[11px] text-accent/80 ml-1.5 px-1.5 py-0.5 rounded bg-accent-subtle">AOI L-1C</span>
+</div>
+</div>
+<!-- Right Header Action -->
+<div class="flex items-center gap-3">
+<div class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded bg-white/[0.03] border border-surface-border">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+<span class="text-xs text-on-surface-muted">Sentinel-2B</span>
+<span class="text-xs font-mono text-white/80">ORBIT 114</span>
+</div>
+<button onclick="window.location.href='../earthvision_digital_image_processing_workspace_clean_spacious/code.html'" class="h-8 px-3.5 rounded-md bg-accent hover:bg-accent/90 text-[#002244] font-medium text-xs flex items-center gap-1.5 transition-colors cursor-pointer" id="headerLaunchBtn">
+<span class="material-symbols-outlined text-[16px]">open_in_new</span>
+<span>Launch DIP Workspace</span>
+</button>
+</div>
+</header>
+<!-- MAIN INTERFACE VIEWPORT -->
+<div class="flex-1 flex overflow-hidden relative">
+<!-- SLEEK ICON-ONLY LEFT SIDEBAR (56px) -->
+<aside class="w-14 flex-shrink-0 bg-surface-panel border-r border-surface-border flex flex-col items-center py-3 justify-between z-30">
+<div class="flex flex-col items-center gap-2 w-full">
+<!-- Earth Explorer [Active] -->
+<a class="group relative w-10 h-10 rounded-lg bg-accent/15 text-accent flex items-center justify-center transition-all" href="#" title="Earth Explorer">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span class="absolute left-14 px-2 py-1 bg-surface-elevated text-xs font-medium text-white rounded shadow-lg border border-surface-border pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">Earth Explorer</span>
+</a>
+<!-- Image Acquisition -->
+<a class="group relative w-10 h-10 rounded-lg text-on-surface-muted hover:text-on-surface hover:bg-white/[0.04] flex items-center justify-center transition-all" href="#" title="Image Acquisition">
+<span class="material-symbols-outlined text-[20px]">satellite_alt</span>
+<span class="absolute left-14 px-2 py-1 bg-surface-elevated text-xs font-medium text-white rounded shadow-lg border border-surface-border pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">Image Acquisition</span>
+</a>
+<!-- DIP Workspace -->
+<a class="group relative w-10 h-10 rounded-lg text-on-surface-muted hover:text-on-surface hover:bg-white/[0.04] flex items-center justify-center transition-all" href="../earthvision_digital_image_processing_workspace_clean_spacious/code.html" title="DIP Workspace">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span class="absolute left-14 px-2 py-1 bg-surface-elevated text-xs font-medium text-white rounded shadow-lg border border-surface-border pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">DIP Workspace</span>
+</a>
+<!-- Processing History -->
+<a class="group relative w-10 h-10 rounded-lg text-on-surface-muted hover:text-on-surface hover:bg-white/[0.04] flex items-center justify-center transition-all" href="#" title="Processing History">
+<span class="material-symbols-outlined text-[20px]">history</span>
+<span class="absolute left-14 px-2 py-1 bg-surface-elevated text-xs font-medium text-white rounded shadow-lg border border-surface-border pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">Processing History</span>
+</a>
+</div>
+<div class="flex flex-col items-center gap-2 w-full">
+<!-- Settings -->
+<button class="group relative w-10 h-10 rounded-lg text-on-surface-muted hover:text-on-surface hover:bg-white/[0.04] flex items-center justify-center transition-all" title="Instrument Settings">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span class="absolute left-14 px-2 py-1 bg-surface-elevated text-xs font-medium text-white rounded shadow-lg border border-surface-border pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50">Settings</span>
+</button>
+</div>
+</aside>
+<!-- CENTER 3D GLOBE WORKSPACE (Dominant 65-70% Area, generous negative space) -->
+<main class="flex-1 relative flex items-center justify-center overflow-hidden bg-background">
+<!-- FLOATING TOP SEARCH BAR & PRESETS (Centered, Minimal, Calm) -->
+<div class="absolute top-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2.5 w-full max-w-lg px-4 pointer-events-auto">
+<div class="w-full flex items-center bg-surface-panel/90 backdrop-blur-md border border-surface-border rounded-full px-3.5 py-1.5 shadow-xl transition-all focus-within:border-accent/60">
+<span class="material-symbols-outlined text-[18px] text-on-surface-muted mr-2">search</span>
+<input class="bg-transparent text-xs text-on-surface placeholder:text-on-surface-muted/60 focus:outline-none w-full" id="explorerSearchInput" placeholder="Search city, coordinates, or landmark..." type="text" value="Dubai Coastal Archipelagos, UAE"/>
+<span class="text-[11px] font-mono text-accent/80 bg-accent-subtle px-2 py-0.5 rounded-full ml-2 whitespace-nowrap">25.19° N, 55.27° E</span>
+</div>
+<!-- Clean Preset Chips -->
+<div class="flex items-center gap-1.5">
+<button class="target-chip active px-3 py-1 rounded-full text-xs font-medium bg-accent text-[#002244] transition-all" data-target="dubai">Dubai Palm</button>
+<button class="target-chip px-3 py-1 rounded-full text-xs font-medium bg-surface-panel/80 hover:bg-surface-elevated text-on-surface-muted hover:text-on-surface border border-surface-border transition-all" data-target="suez">Suez Canal</button>
+<button class="target-chip px-3 py-1 rounded-full text-xs font-medium bg-surface-panel/80 hover:bg-surface-elevated text-on-surface-muted hover:text-on-surface border border-surface-border transition-all" data-target="amazon">Amazon Basin</button>
+<button class="target-chip px-3 py-1 rounded-full text-xs font-medium bg-surface-panel/80 hover:bg-surface-elevated text-on-surface-muted hover:text-on-surface border border-surface-border transition-all" data-target="tokyo">Tokyo Bay</button>
+</div>
+</div>
+<!-- PHOTOREALISTIC 3D PLANET EARTH VIEWPORT -->
+<div class="relative w-[520px] h-[520px] sm:w-[600px] sm:h-[600px] lg:w-[660px] lg:h-[660px] flex items-center justify-center transition-transform duration-700 ease-out" id="globeContainer">
+<!-- Soft Atmospheric Rim Lighting Effect -->
+<div class="absolute inset-0 rounded-full shadow-[0_0_80px_rgba(77,163,255,0.18)] pointer-events-none"></div>
+<!-- Earth Spherical Body using Image 15 -->
+<div class="w-full h-full rounded-full overflow-hidden relative shadow-[inset_-30px_-30px_70px_rgba(0,0,0,0.95),inset_20px_20px_40px_rgba(77,163,255,0.22)] border border-white/10 select-none">
+<img alt="Photorealistic 3D Earth globe from orbit" class="w-full h-full object-cover scale-[1.03] transition-transform duration-1000 ease-out cursor-grab active:cursor-grabbing" id="globeImage" src="https://lh3.googleusercontent.com/aida/AEtjO1XTw4vYtGn6klLFs2g139t-_YN1ii6qs9ZwRjMBg2tBl8tcVy-YCB42qPpg3F1O3qHdXf72ILq0l1QG7TYIhMMslDHjgFOU65F4LZDU1_98EGdGIzbXfJ0ZkXN-wJBLaYRP6vKwk5nc6XkCoPoosO2JI2GQ3JNdM0oxJxfT3IbY8m0Ilqc4o920lBCKWzsCbG37eXqB0q1Cp4Cpc-1Wj7wPRAVJv4pLYiuxPDcEx9cBip-5_sWSRVKbQvZt"/>
+<!-- Delicate Coordinate Graticule (Subtle 8% opacity) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-25 mix-blend-screen" viewbox="0 0 600 600">
+<ellipse cx="300" cy="300" fill="none" rx="290" ry="290" stroke="#4da3ff" stroke-dasharray="3 6" stroke-width="0.75"></ellipse>
+<ellipse cx="300" cy="300" fill="none" rx="190" ry="290" stroke="#4da3ff" stroke-opacity="0.4" stroke-width="0.5"></ellipse>
+<ellipse cx="300" cy="300" fill="none" rx="90" ry="290" stroke="#4da3ff" stroke-opacity="0.4" stroke-width="0.5"></ellipse>
+<ellipse cx="300" cy="300" fill="none" rx="290" ry="190" stroke="#4da3ff" stroke-opacity="0.4" stroke-width="0.5"></ellipse>
+<ellipse cx="300" cy="300" fill="none" rx="290" ry="90" stroke="#4da3ff" stroke-opacity="0.4" stroke-width="0.5"></ellipse>
+</svg>
+<!-- TARGET MARKER RETICLE & AOI BOUNDARY -->
+<div class="absolute pointer-events-auto cursor-pointer transition-all duration-700 ease-out" id="targetReticle" style="top: 48%; left: 52%; transform: translate(-50%, -50%);">
+<!-- Delicate pulsing ring -->
+<div class="relative flex items-center justify-center">
+<span class="absolute w-10 h-10 rounded-full bg-accent/20 animate-ping" style="animation-duration: 3s;"></span>
+<div class="w-5 h-5 rounded-sm border border-accent/90 bg-accent/15 flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-accent shadow-[0_0_8px_#4da3ff]"></span>
+</div>
+<!-- AOI Footprint Bounding Frame -->
+<div class="absolute w-16 h-16 border border-dashed border-accent/40 rounded-sm pointer-events-none"></div>
+<!-- Compact Label Badge -->
+<div class="absolute left-7 top-1/2 -translate-y-1/2 bg-surface-panel/90 backdrop-blur border border-surface-border px-2 py-0.5 rounded shadow whitespace-nowrap">
+<span class="text-[11px] font-mono text-accent font-medium">AOI // 25.19° N, 55.27° E</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MINIMAL VERTICAL MAP CONTROLS (Right of viewport) -->
+<div class="absolute right-6 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-1.5 bg-surface-panel/90 backdrop-blur-md border border-surface-border p-1 rounded-lg shadow-xl">
+<button class="w-8 h-8 rounded hover:bg-white/[0.08] text-on-surface-muted hover:text-white flex items-center justify-center transition-colors" id="zoomInBtn" title="Zoom In">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/[0.08] text-on-surface-muted hover:text-white flex items-center justify-center transition-colors" id="zoomOutBtn" title="Zoom Out">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<div class="h-[1px] w-full bg-surface-border my-0.5"></div>
+<button class="w-8 h-8 rounded hover:bg-white/[0.08] text-on-surface-muted hover:text-white flex items-center justify-center transition-colors" id="resetNorthBtn" title="Reset North">
+<span class="material-symbols-outlined text-[18px]">navigation</span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/[0.08] text-accent flex items-center justify-center transition-colors" id="layerToggleBtn" title="Active Layer (True Color RGB)">
+<span class="material-symbols-outlined text-[18px]">layers</span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/[0.08] text-on-surface-muted hover:text-white flex items-center justify-center transition-colors" id="fullscreenBtn" title="Toggle Fullscreen">
+<span class="material-symbols-outlined text-[18px]">fullscreen</span>
+</button>
+</div>
+<!-- BOTTOM SUBTLE NADIR/SUN SUMMARY PILL -->
+<div class="absolute bottom-6 left-6 z-20 hidden md:flex items-center gap-4 bg-surface-panel/80 backdrop-blur-md border border-surface-border px-3.5 py-1.5 rounded-full text-xs">
+<div class="flex items-center gap-1.5 text-on-surface-muted">
+<span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+<span>Sun Elevation:</span>
+<span class="font-mono text-white" id="indicatorSun">54.8°</span>
+</div>
+<div class="h-3 w-[1px] bg-surface-border"></div>
+<div class="flex items-center gap-1.5 text-on-surface-muted">
+<span>GSD:</span>
+<span class="font-mono text-accent">10m / Multi-Band</span>
+</div>
+<div class="h-3 w-[1px] bg-surface-border"></div>
+<div class="flex items-center gap-1.5 text-on-surface-muted">
+<span>Sensor:</span>
+<span class="font-mono text-white/90">MSI Level-1C</span>
+</div>
+</div>
+</main>
+<!-- RIGHT DOCKED TELEMETRY PANEL (320px, calm scientific instrument) -->
+<aside class="w-80 flex-shrink-0 bg-surface-panel border-l border-surface-border flex flex-col justify-between z-30">
+<!-- Panel Header & Tabs -->
+<div class="flex flex-col border-b border-surface-border">
+<div class="px-5 py-3.5 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-accent">radar</span>
+<span class="text-xs font-semibold uppercase tracking-wider text-white">Target Telemetry</span>
+</div>
+<span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">LIVE STREAM</span>
+</div>
+<!-- Clean Segmented Navigation Tabs -->
+<div class="flex px-4 gap-1 pb-2">
+<button class="tab-btn active flex-1 py-1 text-center text-xs font-medium rounded text-accent bg-white/[0.04] border border-surface-border" data-tab="telemetry">Telemetry</button>
+<button class="tab-btn flex-1 py-1 text-center text-xs font-medium rounded text-on-surface-muted hover:text-white transition-colors" data-tab="bands">Bands</button>
+<button class="tab-btn flex-1 py-1 text-center text-xs font-medium rounded text-on-surface-muted hover:text-white transition-colors" data-tab="preview">Preview</button>
+</div>
+</div>
+<!-- Tab Content Area -->
+<div class="flex-1 overflow-y-auto p-5 flex flex-col gap-5">
+<!-- TAB 1: TELEMETRY (Default Active) -->
+<div class="tab-panel flex flex-col gap-4" id="tab-telemetry">
+<!-- Target Location Name & Area -->
+<div class="p-3.5 rounded-lg bg-surface-elevated border border-surface-border flex flex-col gap-1.5">
+<span class="text-[11px] font-mono text-on-surface-muted uppercase">Target Designation</span>
+<div class="text-sm font-semibold text-white" id="panelTargetName">Dubai Coastal Archipelagos</div>
+<div class="flex items-center justify-between text-xs text-on-surface-muted pt-1 border-t border-surface-border/50 mt-1">
+<span>Coverage Footprint</span>
+<span class="font-mono text-white">144.0 km²</span>
+</div>
+</div>
+<!-- Spatial Geometry Metrics -->
+<div class="flex flex-col gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-on-surface-muted">Spatial Geometry</span>
+<div class="grid grid-cols-2 gap-2">
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex flex-col">
+<span class="text-[11px] text-on-surface-muted">Latitude</span>
+<span class="text-xs font-mono text-white font-medium mt-0.5" id="valLat">25.1972° N</span>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex flex-col">
+<span class="text-[11px] text-on-surface-muted">Longitude</span>
+<span class="text-xs font-mono text-white font-medium mt-0.5" id="valLon">55.2744° E</span>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex flex-col">
+<span class="text-[11px] text-on-surface-muted">Mean Elevation</span>
+<span class="text-xs font-mono text-white/90 mt-0.5" id="valElev">11 m ASL</span>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex flex-col">
+<span class="text-[11px] text-on-surface-muted">Solar Zenith</span>
+<span class="text-xs font-mono text-accent mt-0.5" id="valZenith">32.4° (Optimal)</span>
+</div>
+</div>
+</div>
+<!-- Acquisition Pass Specifications -->
+<div class="flex flex-col gap-2">
+<span class="text-[11px] font-mono uppercase tracking-wider text-on-surface-muted">Pass Specification</span>
+<div class="rounded-lg bg-surface-elevated border border-surface-border p-3 flex flex-col gap-2 text-xs">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-muted">Platform</span>
+<span class="font-medium text-white">Sentinel-2B / MSI</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-muted">Cloud Fraction</span>
+<span class="font-mono text-emerald-400">0.8% (Clear)</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-muted">GSD Resolution</span>
+<span class="font-mono text-white">10m / Multi-Band</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-muted">Downlink Payload</span>
+<span class="font-mono text-white/90">1.42 GB</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 2: SPECTRAL BANDS (Initially Hidden) -->
+<div class="tab-panel hidden flex flex-col gap-3" id="tab-bands">
+<span class="text-[11px] font-mono uppercase tracking-wider text-on-surface-muted">Configured MSI Bands</span>
+<!-- Band item -->
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-white">B02 Blue</span>
+<span class="text-[11px] font-mono text-on-surface-muted">490 nm</span>
+</div>
+</div>
+<span class="text-[11px] font-mono text-on-surface-muted px-1.5 py-0.5 rounded bg-white/5">10m GSD</span>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-white">B03 Green</span>
+<span class="text-[11px] font-mono text-on-surface-muted">560 nm</span>
+</div>
+</div>
+<span class="text-[11px] font-mono text-on-surface-muted px-1.5 py-0.5 rounded bg-white/5">10m GSD</span>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-white">B04 Red</span>
+<span class="text-[11px] font-mono text-on-surface-muted">665 nm</span>
+</div>
+</div>
+<span class="text-[11px] font-mono text-on-surface-muted px-1.5 py-0.5 rounded bg-white/5">10m GSD</span>
+</div>
+<div class="p-2.5 rounded bg-surface-elevated border border-surface-border flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+<div class="flex flex-col">
+<span class="text-xs font-medium text-white">B08 NIR (Near-Infrared)</span>
+<span class="text-[11px] font-mono text-on-surface-muted">842 nm</span>
+</div>
+</div>
+<span class="text-[11px] font-mono text-accent px-1.5 py-0.5 rounded bg-accent-subtle">10m GSD</span>
+</div>
+<p class="text-[11px] text-on-surface-muted leading-relaxed mt-2">
+            Spectral composite calibrated for true-color atmospheric penetration and coastal water reflection index.
+          </p>
+</div>
+<!-- TAB 3: ACQUISITION PREVIEW (Initially Hidden) -->
+<div class="tab-panel hidden flex flex-col gap-3" id="tab-preview">
+<span class="text-[11px] font-mono uppercase tracking-wider text-on-surface-muted">Swath Footprint Preview</span>
+<div class="relative rounded-lg overflow-hidden border border-surface-border bg-surface-elevated h-36">
+<img alt="Swath Preview Thumbnail" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbFFIpLAZi51tuzUb2XoYPLnEDZPinrIN7hKvtQ4aiQYledP9RXOU_sDw8POZ2VTUKJdmOMhLViEJcMxOaMQj9eYCVKg0TqsxfRUGOJn-K7wcM9R3HwfrieK7kV5BHUatkEo0pGcRg3govrHuHHdvKgqIDCSDgohA9cOYiOalrlaIWiQS53S-I_chA-SYBcn6Ptjgimpp-tAid8MWXW3pPJV5bHg1d-oXU-12s1gMLU0xWiMwiN10cNg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
+<div class="absolute bottom-2 left-2.5 font-mono text-[11px] text-accent flex items-center gap-1 bg-surface-panel/80 px-2 py-0.5 rounded">
+<span class="material-symbols-outlined text-[13px]">crop_free</span>
+<span>12.0 × 12.0 km AOI</span>
+</div>
+</div>
+<div class="text-xs text-on-surface-muted flex flex-col gap-1.5 mt-1">
+<div class="flex justify-between">
+<span>Sensor Mode:</span>
+<span class="font-mono text-white">MSI Standard Swath</span>
+</div>
+<div class="flex justify-between">
+<span>Radiometric Calibration:</span>
+<span class="font-mono text-white">TOA Reflectance (L-1C)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Panel Footer: One Primary Button + Quiet Secondary Actions -->
+<div class="p-5 border-t border-surface-border flex flex-col gap-2.5 bg-surface-panel/80">
+<!-- Single Clear Primary Action -->
+<button class="w-full py-2.5 rounded-md bg-accent hover:bg-accent/90 text-[#002244] font-medium text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99]" id="captureImageBtn">
+<span class="material-symbols-outlined text-[17px]">satellite_alt</span>
+<span class="font-semibold tracking-wide">Capture Satellite Image (Swath L-1C)</span>
+</button>
+<!-- Quiet Secondary Buttons -->
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 px-2 rounded bg-surface-elevated hover:bg-white/[0.04] text-on-surface-muted hover:text-white border border-surface-border text-xs flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[15px]">crop</span>
+<span>Adjust AOI</span>
+</button>
+<button class="py-2 px-2 rounded bg-surface-elevated hover:bg-white/[0.04] text-on-surface-muted hover:text-white border border-surface-border text-xs flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[15px]">calendar_month</span>
+<span>Multi-Date</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+<!-- MINIMAL TOAST NOTIFICATION -->
+<div class="fixed bottom-6 right-84 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 px-4 py-2.5 rounded-lg bg-surface-elevated border border-surface-border text-white shadow-2xl" id="captureToast">
+<div class="w-6 h-6 rounded bg-accent/20 text-accent flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-medium">Swath Queued for Acquisition</span>
+<span class="text-[11px] font-mono text-on-surface-muted">Downlink scheduled via LEO-Sentinel network.</span>
+</div>
+</div>
+<!-- INTERACTIVE LOGIC (Calm transitions, presets, tab switching) -->
+<script>
+    (function() {
+      const presets = {
+        dubai: {
+          name: "Dubai Coastal Archipelagos",
+          coords: "25.1972° N, 55.2744° E",
+          lat: "25.1972° N",
+          lon: "55.2744° E",
+          elev: "11 m ASL",
+          zenith: "32.4° (Optimal)",
+          sun: "54.8°",
+          reticle: { top: "48%", left: "52%" },
+          rotation: 0
+        },
+        suez: {
+          name: "Suez Canal Transit Corridor",
+          coords: "30.5852° N, 32.2654° E",
+          lat: "30.5852° N",
+          lon: "32.2654° E",
+          elev: "8 m ASL",
+          zenith: "36.8°",
+          sun: "52.1°",
+          reticle: { top: "42%", left: "46%" },
+          rotation: -10
+        },
+        amazon: {
+          name: "Amazon Rainforest Primary Basin",
+          coords: "3.4653° S, 62.2159° W",
+          lat: "03.4653° S",
+          lon: "62.2159° W",
+          elev: "92 m ASL",
+          zenith: "24.9°",
+          sun: "64.2°",
+          reticle: { top: "54%", left: "34%" },
+          rotation: -35
+        },
+        tokyo: {
+          name: "Tokyo Megalopolis & Bay Terminal",
+          coords: "35.6762° N, 139.6503° E",
+          lat: "35.6762° N",
+          lon: "139.6503° E",
+          elev: "40 m ASL",
+          zenith: "41.2°",
+          sun: "48.3°",
+          reticle: { top: "40%", left: "68%" },
+          rotation: 30
+        }
+      };
+
+      const chips = document.querySelectorAll('.target-chip');
+      const breadcrumb = document.getElementById('currentBreadcrumbLocation');
+      const searchInput = document.getElementById('explorerSearchInput');
+      const panelName = document.getElementById('panelTargetName');
+      const valLat = document.getElementById('valLat');
+      const valLon = document.getElementById('valLon');
+      const valElev = document.getElementById('valElev');
+      const valZenith = document.getElementById('valZenith');
+      const indSun = document.getElementById('indicatorSun');
+      const reticle = document.getElementById('targetReticle');
+      const globeContainer = document.getElementById('globeContainer');
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => {
+            c.classList.remove('bg-accent', 'text-[#002244]');
+            c.classList.add('bg-surface-panel/80', 'text-on-surface-muted');
+          });
+          chip.classList.add('bg-accent', 'text-[#002244]');
+          chip.classList.remove('bg-surface-panel/80', 'text-on-surface-muted');
+
+          const key = chip.getAttribute('data-target');
+          const data = presets[key];
+          if (data) {
+            breadcrumb.textContent = data.name;
+            searchInput.value = data.name;
+            panelName.textContent = data.name;
+            valLat.textContent = data.lat;
+            valLon.textContent = data.lon;
+            valElev.textContent = data.elev;
+            valZenith.textContent = data.zenith;
+            indSun.textContent = data.sun;
+
+            // Smooth subtle globe adjustments
+            reticle.style.top = data.reticle.top;
+            reticle.style.left = data.reticle.left;
+            globeContainer.style.transform = `scale(${currentZoom}) rotate(${data.rotation * 0.2}deg)`;
+          }
+        });
+      });
+
+      // Zoom adjustments
+      let currentZoom = 1;
+      const zoomInBtn = document.getElementById('zoomInBtn');
+      const zoomOutBtn = document.getElementById('zoomOutBtn');
+      const resetNorthBtn = document.getElementById('resetNorthBtn');
+
+      zoomInBtn.addEventListener('click', () => {
+        if (currentZoom < 1.3) {
+          currentZoom += 0.1;
+          globeContainer.style.transform = `scale(${currentZoom})`;
+        }
+      });
+
+      zoomOutBtn.addEventListener('click', () => {
+        if (currentZoom > 0.85) {
+          currentZoom -= 0.1;
+          globeContainer.style.transform = `scale(${currentZoom})`;
+        }
+      });
+
+      resetNorthBtn.addEventListener('click', () => {
+        currentZoom = 1;
+        globeContainer.style.transform = 'scale(1) rotate(0deg)';
+      });
+
+      // Tab switcher
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => {
+            b.classList.remove('active', 'text-accent', 'bg-white/[0.04]', 'border', 'border-surface-border');
+            b.classList.add('text-on-surface-muted');
+          });
+          btn.classList.add('active', 'text-accent', 'bg-white/[0.04]', 'border', 'border-surface-border');
+          btn.classList.remove('text-on-surface-muted');
+
+          const target = btn.getAttribute('data-tab');
+          tabPanels.forEach(panel => {
+            if (panel.id === `tab-${target}`) {
+              panel.classList.remove('hidden');
+            } else {
+              panel.classList.add('hidden');
+            }
+          });
+        });
+      });
+
+      // Capture toast trigger
+      const captureBtn = document.getElementById('captureImageBtn');
+      const toast = document.getElementById('captureToast');
+      let toastTimer;
+
+      captureBtn.addEventListener('click', () => {
+        clearTimeout(toastTimer);
+        toast.classList.remove('translate-y-24', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+        toastTimer = setTimeout(() => {
+          toast.classList.add('translate-y-24', 'opacity-0');
+          toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 3200);
+      });
+    })();
+  </script>
+</body></html>

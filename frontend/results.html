@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>EarthVision — Analysis Results</title>
+  
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet"/>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#0a0e15",
+            "surface-panel": "#0f131b",
+            "surface-elevated": "#151a23",
+            "surface-border": "rgba(255, 255, 255, 0.08)",
+            "primary": "#4cd7f6",
+            "primary-container": "#06b6d4"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background text-white/90 antialiased min-h-screen flex flex-col selection:bg-primary-container font-sans">
+
+  <header class="h-14 bg-surface-panel border-b border-surface-border px-4 flex items-center justify-between z-30 flex-shrink-0">
+    <div class="flex items-center gap-4">
+      <a href="workspace.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <span class="material-symbols-outlined text-primary text-[20px]">arrow_back</span>
+        <span class="font-semibold text-sm tracking-tight text-white">Back to DIP Studio</span>
+      </a>
+      <div class="h-4 w-px bg-white/10"></div>
+      <div class="flex items-center gap-2 text-xs">
+        <span class="text-white/40">Inspection</span>
+        <span class="text-white/20">/</span>
+        <span class="text-white font-medium" id="resLocation">Detailed Results View</span>
+      </div>
+    </div>
+    <button onclick="downloadReport()" class="px-3.5 py-1.5 rounded-lg bg-primary-container text-[#002b36] font-semibold text-xs flex items-center gap-1.5 hover:bg-primary transition-colors">
+      <span class="material-symbols-outlined text-[16px]">download</span>
+      <span>Download Report</span>
+    </button>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+    <!-- 56px Sidebar -->
+    <aside class="w-14 bg-[#0A0E15] border-r border-surface-border flex flex-col items-center py-3 gap-2 shrink-0 select-none z-20">
+      <a href="index.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Landing Page">
+        <span class="material-symbols-outlined text-[20px]">home</span>
+      </a>
+      <a href="explorer.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="3D Earth Explorer">
+        <span class="material-symbols-outlined text-[20px]">public</span>
+      </a>
+      <a href="workspace.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="DIP Workspace">
+        <span class="material-symbols-outlined text-[20px]">tune</span>
+      </a>
+      <a href="catalog.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Scene Catalog">
+        <span class="material-symbols-outlined text-[20px]">photo_library</span>
+      </a>
+      <a href="history.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Processing History">
+        <span class="material-symbols-outlined text-[20px]">history</span>
+      </a>
+      <div class="mt-auto">
+        <a href="settings.html" class="w-10 h-10 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/[0.06] transition-colors" title="Settings">
+          <span class="material-symbols-outlined text-[20px]">settings</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto p-6 max-w-6xl mx-auto w-full space-y-6">
+      
+      <!-- Side by Side Visual Comparison -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-surface-elevated rounded-xl border border-surface-border p-4 space-y-2">
+          <div class="flex items-center justify-between text-xs pb-1 border-b border-white/5">
+            <span class="font-semibold text-white">Original Raster</span>
+            <span class="text-white/40 font-mono">Esri World Imagery</span>
+          </div>
+          <div class="aspect-square bg-black rounded-lg overflow-hidden border border-white/5 flex items-center justify-center">
+            <img id="imgOriginal" class="w-full h-full object-contain" src=""/>
+          </div>
+        </div>
+
+        <div class="bg-surface-elevated rounded-xl border border-surface-border p-4 space-y-2">
+          <div class="flex items-center justify-between text-xs pb-1 border-b border-white/5">
+            <span class="font-semibold text-primary">Processed Result</span>
+            <span id="resAlgoBadge" class="text-primary font-mono text-[11px] bg-primary/10 px-1.5 py-0.5 rounded border border-primary/20">Pipeline Output</span>
+          </div>
+          <div class="aspect-square bg-black rounded-lg overflow-hidden border border-white/5 flex items-center justify-center">
+            <img id="imgProcessed" class="w-full h-full object-contain" src=""/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics and Execution Summary -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <div class="bg-surface-elevated rounded-xl border border-surface-border p-4 space-y-3">
+          <div class="font-semibold text-xs text-white">Raster Metrics</div>
+          <div class="space-y-1.5 font-mono text-xs">
+            <div class="flex justify-between"><span class="text-white/50">PSNR:</span><span id="mPsnr" class="text-primary">--</span></div>
+            <div class="flex justify-between"><span class="text-white/50">SSIM:</span><span id="mSsim" class="text-white">--</span></div>
+            <div class="flex justify-between"><span class="text-white/50">Entropy:</span><span id="mEntropy" class="text-white">--</span></div>
+            <div class="flex justify-between"><span class="text-white/50">Dynamic Range:</span><span id="mDynamic" class="text-white">--</span></div>
+          </div>
+        </div>
+
+        <div class="bg-surface-elevated rounded-xl border border-surface-border p-4 space-y-3">
+          <div class="font-semibold text-xs text-white">Execution Telemetry</div>
+          <div class="space-y-1.5 font-mono text-xs">
+            <div class="flex justify-between"><span class="text-white/50">Algorithm:</span><span id="tAlgo" class="text-white">--</span></div>
+            <div class="flex justify-between"><span class="text-white/50">Duration:</span><span id="tTime" class="text-emerald-400">-- ms</span></div>
+            <div class="flex justify-between"><span class="text-white/50">Timestamp:</span><span id="tStamp" class="text-white/80">--</span></div>
+            <div class="flex justify-between"><span class="text-white/50">Status:</span><span class="text-emerald-400">Completed</span></div>
+          </div>
+        </div>
+
+        <div class="bg-surface-elevated rounded-xl border border-surface-border p-4 space-y-3">
+          <div class="font-semibold text-xs text-white">Class Partitions</div>
+          <div id="resLegend" class="space-y-2 text-xs">
+            <div class="text-white/30 text-center py-4">No partitions extracted</div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="js/state.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const history = window.EarthVisionState.getHistory();
+      const captures = window.EarthVisionState.getCaptures();
+
+      if (captures.length > 0) {
+        document.getElementById('imgOriginal').src = captures[0].dataUrl || captures[0].image;
+      }
+
+      if (history.length > 0) {
+        const item = history[0];
+        document.getElementById('imgProcessed').src = item.thumbnail || '';
+        document.getElementById('resLocation').textContent = item.location || 'Selected AOI';
+        document.getElementById('resAlgoBadge').textContent = item.algorithm || 'Processed';
+        document.getElementById('tAlgo').textContent = item.algorithm || '--';
+        document.getElementById('tTime').textContent = `${item.time_ms || 0} ms`;
+        document.getElementById('tStamp').textContent = new Date(item.timestamp).toLocaleTimeString();
+
+        const m = item.metrics || {};
+        document.getElementById('mPsnr').textContent = m.psnr !== null && m.psnr !== undefined ? `${m.psnr} dB` : 'N/A';
+        document.getElementById('mSsim').textContent = m.ssim !== null && m.ssim !== undefined ? m.ssim : 'N/A';
+        document.getElementById('mEntropy').textContent = m.entropy !== undefined ? `${m.entropy} bits` : '--';
+        document.getElementById('mDynamic').textContent = `${m.min ?? 0} - ${m.max ?? 255} DN`;
+      }
+    });
+
+    function downloadReport() {
+      const history = window.EarthVisionState.getHistory();
+      const payload = history[0] || {};
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `earthvision_report_${Date.now()}.json`;
+      a.click();
+    }
+  </script>
+</body>
+</html>

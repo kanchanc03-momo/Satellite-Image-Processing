@@ -1,0 +1,768 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_standard" name="shell-type"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-background": "#dfe1f6", "primary": "#4cd7f6", "tertiary-container": "#1bbd85", "secondary-fixed-dim": "#adc6ff", "on-surface": "#dfe1f6", "primary-fixed-dim": "#4cd7f6", "secondary": "#adc6ff", "inverse-surface": "#dfe1f6", "primary-fixed": "#acedff", "surface-container-lowest": "#090e1c", "surface-container-highest": "#303444", "inverse-on-surface": "#2c303f", "error-container": "#93000a", "on-tertiary-container": "#00452e", "surface-bright": "#353948", "on-secondary": "#002e6a", "secondary-container": "#0566d9", "on-error": "#690005", "background": "#0f1321", "primary-container": "#06b6d4", "on-secondary-fixed-variant": "#004395", "on-primary-fixed-variant": "#004e5c", "surface-dim": "#0f1321", "on-tertiary": "#003824", "inverse-primary": "#00687a", "error": "#ffb4ab", "surface-tint": "#4cd7f6", "on-surface-variant": "#bcc9cd", "on-tertiary-fixed": "#002113", "on-secondary-fixed": "#001a42", "outline-variant": "#3d494c", "outline": "#869397", "on-primary-container": "#00424f", "on-secondary-container": "#e6ecff", "surface-container-high": "#252939", "tertiary-fixed": "#6ffbbe", "surface-container": "#1b1f2e", "on-error-container": "#ffdad6", "secondary-fixed": "#d8e2ff", "surface": "#0f1321", "surface-variant": "#303444", "on-tertiary-fixed-variant": "#005236", "on-primary-fixed": "#001f26", "tertiary-fixed-dim": "#4edea3", "on-primary": "#003640", "tertiary": "#4edea3", "surface-container-low": "#171b2a" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "gutter-desktop": "1.5rem", "gutter": "1rem", "margin-desktop": "2rem", "space-md": "1rem", "space-lg": "1.5rem", "margin": "1rem", "space-xl": "2.5rem", "space-sm": "0.5rem", "space-xs": "0.25rem" }, "fontFamily": { "headline-sm": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "Plus Jakarta Sans" ], "telemetry-sm": [ "JetBrains Mono" ], "telemetry-md": [ "JetBrains Mono" ], "telemetry-lg": [ "JetBrains Mono" ], "headline-lg": [ "Plus Jakarta Sans" ], "body-md": [ "Inter" ], "label-caps": [ "JetBrains Mono" ], "display-lg-mobile": [ "Plus Jakarta Sans" ], "headline-md": [ "Plus Jakarta Sans" ], "body-lg": [ "Inter" ], "display-lg": [ "Plus Jakarta Sans" ], "body-sm": [ "Inter" ] }, "fontSize": { "headline-sm": [ "16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "600" } ], "headline-lg-mobile": [ "22px", { "lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "telemetry-sm": [ "11px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "400" } ], "telemetry-md": [ "13px", { "lineHeight": "18px", "letterSpacing": "0.025em", "fontWeight": "500" } ], "telemetry-lg": [ "15px", { "lineHeight": "22px", "letterSpacing": "0.02em", "fontWeight": "500" } ], "headline-lg": [ "28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "body-md": [ "14px", { "lineHeight": "22px", "letterSpacing": "0.005em", "fontWeight": "400" } ], "label-caps": [ "10px", { "lineHeight": "14px", "letterSpacing": "0.08em", "fontWeight": "600" } ], "display-lg-mobile": [ "30px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" } ], "headline-md": [ "20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "body-lg": [ "16px", { "lineHeight": "26px", "letterSpacing": "0em", "fontWeight": "400" } ], "display-lg": [ "40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" } ], "body-sm": [ "12px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" } ] } } } };</script></head><body class="bg-background font-body-md text-on-surface min-h-screen selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_4px_24px_-4px_rgba(6,182,212,0.12)]"><div class="h-16 w-full max-w-7xl mx-auto px-8 flex items-center justify-between gap-8"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-primary/15 border border-primary/40 flex items-center justify-center text-primary shadow-[0_0_12px_rgba(76,215,246,0.3)] shrink-0"><svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div><span class="font-headline-sm text-lg font-bold tracking-tight text-on-surface">EarthVision</span></div><nav class="hidden md:flex items-center gap-8 text-[14px] font-medium"><a class="text-primary transition-colors" data-path="earth-explorer" href="#">Explorer</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" href="#pipeline">Features</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="dip-workspace" href="#">DIP Workspace</a><a class="text-on-surface-variant hover:text-on-surface transition-colors" data-path="processing-history" href="#">Processing History</a></nav><div class="flex items-center gap-4"><div class="hidden sm:flex items-center gap-2 text-xs font-telemetry-sm text-on-surface-variant"><span class="w-2 h-2 rounded-full bg-tertiary"></span><span class="">Online</span></div><a class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary-container text-on-primary font-medium text-[13px] shadow-[0_0_16px_rgba(6,182,212,0.3)] hover:bg-primary transition-all active:scale-95" data-path="earth-explorer" href="#"><span class="material-symbols-outlined text-[16px]">travel_explore</span><span class="">Launch Explorer</span></a></div></div></header><main class="w-full pt-16 bg-background relative min-h-[calc(100vh-64px)]"><div class="flex flex-col w-full relative overflow-hidden">
+<!-- Hero Geospatial Viewport Section -->
+<section class="relative w-full min-h-[1020px] flex flex-col justify-between px-gutter-desktop pt-16 pb-24 overflow-hidden">
+<!-- Ambient Space Background Glow -->
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] bg-primary/10 rounded-full blur-[140px]"></div>
+<div class="absolute top-1/3 right-10 w-[500px] h-[500px] bg-secondary-container/15 rounded-full blur-[120px]"></div>
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#090e1c_80%)]"></div>
+</div>
+<!-- Interactive Canvas & Orbit Trajectory Simulation -->
+<div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-auto">
+<canvas class="w-full h-full max-w-[1400px] cursor-grab active:cursor-grabbing opacity-90" id="earthCanvas" width="1280" height="1020"></canvas>
+</div>
+<!-- HUD Grid Line Markers (Corner Reticles) -->
+<div class="absolute top-10 left-10 text-primary/40 font-telemetry-sm pointer-events-none flex items-center gap-1">
+<span class="text-primary text-base font-bold">+</span>
+<span class="">SYS.GRID // 37.7749° N, 122.4194° W</span>
+</div>
+<div class="absolute top-10 right-10 text-primary/40 font-telemetry-sm pointer-events-none flex items-center gap-1">
+<span class="">LEO-CONSTELLATION: ONLINE</span>
+<span class="text-primary text-base font-bold">+</span>
+</div>
+<!-- Hero Content Overlay with Generous Spacing -->
+<div class="relative z-10 max-w-4xl mt-12 flex flex-col gap-6">
+<!-- Telemetry Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high/60 backdrop-blur-md border border-primary/20 w-fit shadow-[0_0_16px_rgba(6,182,212,0.15)]">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-ping"></span>
+<span class="font-label-caps text-label-caps uppercase text-tertiary tracking-widest">ORBITAL IMAGERY &amp; DIP PLATFORM</span>
+<span class="text-outline text-xs">|</span>
+<span class="font-telemetry-sm text-telemetry-sm text-on-surface-variant">SSO SATELLITE ARRAY ACTIVE</span>
+</div>
+<!-- Core Title -->
+<h1 class="font-display-lg text-display-lg font-bold text-on-surface tracking-tight leading-tight drop-shadow-md">
+        Explore Earth. <br>
+<span class="bg-gradient-to-r from-primary via-primary-fixed to-tertiary bg-clip-text text-transparent">
+          Process Intelligence.
+        </span>
+</h1>
+<!-- Subtitle with expanded line height and margin -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed text-[17px]">
+        Select any coordinate on Earth, downlink raw multispectral radiometric swaths from Sentinel-2 and Landsat-9, and uncover hidden structural insights with sub-second digital image processing.
+      </p>
+<!-- Action Cluster -->
+<div class="flex flex-wrap items-center gap-4 pt-4">
+<a class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-primary-container text-on-primary font-headline-sm text-headline-sm font-semibold tracking-tight shadow-[0_0_24px_rgba(6,182,212,0.45)] hover:shadow-[0_0_32px_rgba(6,182,212,0.65)] hover:bg-primary transition-all duration-300 transform active:scale-95 group" data-path="earth-explorer" href="#">
+<span class="">Start Exploring Earth</span>
+<span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform">travel_explore</span>
+</a>
+<a class="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-surface-container-high/50 hover:bg-surface-container-highest/70 backdrop-blur-md text-primary font-headline-sm text-headline-sm font-medium border border-primary/20 hover:border-primary/50 transition-all duration-300" href="#pipeline">
+<span class="material-symbols-outlined text-[18px] text-tertiary">hub</span>
+<span class="">Explore Pipeline</span>
+</a>
+</div>
+<!-- Airy Search Console Bar -->
+<div class="w-full max-w-2xl mt-6 p-2 rounded-2xl bg-surface-container-lowest/70 backdrop-blur-2xl border border-outline-variant/30 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-2">
+<span class="material-symbols-outlined text-primary text-[22px]">location_searching</span>
+<input class="bg-transparent border-none text-on-surface placeholder:text-outline font-telemetry-sm text-telemetry-md w-full focus:outline-none" id="geoQueryInput" placeholder="Search city, coordinates, country, or landmark (e.g. 35.6762° N, 139.6503° E)..." type="text">
+<button class="px-4 py-2 rounded-lg bg-primary-container/20 hover:bg-primary-container/30 text-primary text-label-caps font-label-caps tracking-wider uppercase border border-primary/30 transition-all flex items-center gap-1.5" id="locateBtn">
+<span class="">Lock</span>
+<span class="material-symbols-outlined text-[14px]">file_download_done</span>
+</button>
+</div>
+<!-- Preset Quick Targets -->
+<div class="flex items-center gap-2 px-3 pb-2 flex-wrap">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider text-[11px]">Targets:</span>
+<button class="px-2.5 py-1 rounded-md bg-surface-container-high/40 hover:bg-surface-container-highest text-on-surface-variant hover:text-primary font-telemetry-sm text-telemetry-sm transition-colors border border-outline-variant/20" onclick="setTargetLocation('Tokyo Bay', 35.5300, 139.8000)">
+            Tokyo Bay
+          </button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container-high/40 hover:bg-surface-container-highest text-on-surface-variant hover:text-primary font-telemetry-sm text-telemetry-sm transition-colors border border-outline-variant/20" onclick="setTargetLocation('Sahara Erg Chebbi', 31.1443, -3.9780)">
+            Sahara Erg
+          </button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container-high/40 hover:bg-surface-container-highest text-on-surface-variant hover:text-primary font-telemetry-sm text-telemetry-sm transition-colors border border-outline-variant/20" onclick="setTargetLocation('Amazon Basin', -3.4653, -62.2159)">
+            Amazon Basin
+          </button>
+<button class="px-2.5 py-1 rounded-md bg-surface-container-high/40 hover:bg-surface-container-highest text-on-surface-variant hover:text-primary font-telemetry-sm text-telemetry-sm transition-colors border border-outline-variant/20" onclick="setTargetLocation('Alps Aletsch Glacier', 46.5028, 8.0314)">
+            Alps Glacier
+          </button>
+</div>
+</div>
+</div>
+<!-- Floating Satellite Telemetry Inspection Card -->
+<div class="absolute bottom-28 right-gutter-desktop z-20 hidden lg:flex flex-col w-84 p-5 rounded-2xl bg-surface-container-lowest/80 backdrop-blur-2xl border border-primary/20 shadow-[0_0_30px_rgba(6,182,212,0.15)]">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-caps text-label-caps uppercase text-on-surface tracking-wider">SATELLITE DOWNLINK</span>
+</div>
+<span class="font-telemetry-sm text-telemetry-sm text-tertiary">PASS #0492-B</span>
+</div>
+<!-- Real Satellite Image Module -->
+<div class="relative w-full h-36 my-4 rounded-xl overflow-hidden border border-primary/20 group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Realistic earth orbital surveillance satellite in low Earth orbit. High-tech chassis with dual rectangular blue photovoltaic solar array wings extended, gleaming gold foil insulation and high-resolution optical sensor lenses angled down toward the glowing curved blue atmosphere of Earth below with night lights illuminating coastlines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAROwKSsDuvn-nc3MOXJP7eMsqNOIcPHvo3hRpPDudqDND8Qc5JoMFZLp-TRm5NeJMl7hoL6Cpsh9WyMCgfMQsC1g4G_ylzBSK-skCkxsbfgvogTCewRf4NShVdAJTzK2uRGkFV_loql3Slxq1-VVCGm_tCD-82RVrYCigMABBxpU-EQG6wWbyb35RdRVBcYEngT_SbvNhkJ7Be6qty3HihVMc_AmCM_TY_ycYH8XEVJjL9Uk8_n_D9Ug">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent"></div>
+<div class="absolute bottom-2 left-2 text-primary font-telemetry-sm text-[10px] bg-surface-container-lowest/80 px-2 py-0.5 rounded border border-primary/30">
+          TERRA-SAR // POL-H
+        </div>
+<div class="absolute top-2 right-2 flex items-center gap-1 font-telemetry-sm text-[10px] text-tertiary bg-surface-container-lowest/80 px-2 py-0.5 rounded">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="">SYNC 100%</span>
+</div>
+</div>
+<!-- Telemetry Spec Matrix -->
+<div class="grid grid-cols-2 gap-2.5 font-telemetry-sm text-telemetry-sm">
+<div class="p-2 rounded-lg bg-surface-container/50 border border-outline-variant/20">
+<div class="text-outline text-[10px] uppercase font-label-caps">Altitude</div>
+<div class="text-on-surface font-semibold text-primary mt-0.5">705.4 km SSO</div>
+</div>
+<div class="p-2 rounded-lg bg-surface-container/50 border border-outline-variant/20">
+<div class="text-outline text-[10px] uppercase font-label-caps">Sensor FOV</div>
+<div class="text-on-surface font-semibold text-primary mt-0.5">34.8° Wide-Swath</div>
+</div>
+<div class="p-2 rounded-lg bg-surface-container/50 border border-outline-variant/20">
+<div class="text-outline text-[10px] uppercase font-label-caps">Swath Width</div>
+<div class="text-on-surface font-semibold text-tertiary mt-0.5">185.0 km</div>
+</div>
+<div class="p-2 rounded-lg bg-surface-container/50 border border-outline-variant/20">
+<div class="text-outline text-[10px] uppercase font-label-caps">Native GSD</div>
+<div class="text-on-surface font-semibold text-tertiary mt-0.5">0.35m Panchro</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between font-telemetry-sm text-[10px] text-on-surface-variant">
+<span class="">NEXT ACQUISITION WINDOW</span>
+<span class="text-primary font-medium">T-MINUS 00:04:18</span>
+</div>
+</div>
+<!-- Live Telemetry KPI Metrics Ribbon with Airy Spacing -->
+<div class="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-6 pt-12 border-t border-outline-variant/20 mt-16">
+<div class="p-6 rounded-2xl bg-surface-container-lowest/50 backdrop-blur-lg border border-outline-variant/20 flex flex-col gap-2 transition-all hover:border-primary/30">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">DAILY SWATH COVERAGE</span>
+<span class="font-telemetry-sm text-[10px] text-tertiary">[SAMPLE DATA]</span>
+</div>
+<div class="font-telemetry-lg text-telemetry-lg text-on-surface font-bold text-2xl flex items-baseline gap-1.5 my-1">
+<span class="text-primary">4.8M</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-normal">km²/day</span>
+</div>
+<span class="font-telemetry-sm text-[12px] text-on-surface-variant leading-relaxed">Continuous LEO pass acquisition</span>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-lowest/50 backdrop-blur-lg border border-outline-variant/20 flex flex-col gap-2 transition-all hover:border-primary/30">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">SPATIAL RESOLUTION</span>
+<span class="font-telemetry-sm text-[10px] text-tertiary">[SAMPLE DATA]</span>
+</div>
+<div class="font-telemetry-lg text-telemetry-lg text-on-surface font-bold text-2xl flex items-baseline gap-1.5 my-1">
+<span class="text-primary">0.35</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-normal">m / pixel</span>
+</div>
+<span class="font-telemetry-sm text-[12px] text-on-surface-variant leading-relaxed">Panchromatic high-resolution</span>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-lowest/50 backdrop-blur-lg border border-outline-variant/20 flex flex-col gap-2 transition-all hover:border-primary/30">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">SPECTRAL BANDS</span>
+<span class="font-telemetry-sm text-[10px] text-tertiary">[SAMPLE DATA]</span>
+</div>
+<div class="font-telemetry-lg text-telemetry-lg text-on-surface font-bold text-2xl flex items-baseline gap-1.5 my-1">
+<span class="text-tertiary">11</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant font-normal">Channels</span>
+</div>
+<span class="font-telemetry-sm text-[12px] text-on-surface-variant leading-relaxed">VNIR, SWIR, TIR &amp; Thermal</span>
+</div>
+<div class="p-6 rounded-2xl bg-surface-container-lowest/50 backdrop-blur-lg border border-outline-variant/20 flex flex-col gap-2 transition-all hover:border-primary/30">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">PROCESSED RASTERS</span>
+<span class="font-telemetry-sm text-[10px] text-tertiary">[SAMPLE DATA]</span>
+</div>
+<div class="font-telemetry-lg text-telemetry-lg text-on-surface font-bold text-2xl flex items-baseline gap-1.5 my-1">
+<span class="text-primary">124,890+</span>
+</div>
+<span class="font-telemetry-sm text-[12px] text-on-surface-variant leading-relaxed">Calibrated &amp; segmented tiles</span>
+</div>
+</div>
+</section>
+<!-- 4-Step Systematic Pipeline Flow -->
+<section class="relative w-full px-gutter-desktop py-28 bg-surface-container-lowest/70 border-t border-b border-outline-variant/20" id="pipeline">
+<div class="max-w-7xl mx-auto flex flex-col gap-14">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
+<div class="flex flex-col gap-2">
+<div class="font-label-caps text-label-caps uppercase text-primary tracking-widest flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="">SYSTEM ARCHITECTURE &amp; WORKFLOW</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface text-3xl font-bold tracking-tight">Four-Stage Operational Pipeline</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg leading-relaxed text-[15px]">
+          From orbital downlink through spatial frequency transformation, every step executes in-memory with live telemetry.
+        </p>
+</div>
+<!-- Steps Grid with generous gap -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Step 1 -->
+<div class="p-8 rounded-2xl bg-surface-container/40 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute -right-4 -top-4 font-telemetry-lg text-7xl font-black text-surface-container-highest/20 select-none pointer-events-none group-hover:text-primary/10 transition-colors">01</div>
+<div class="flex flex-col gap-4 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 border border-primary/30 flex items-center justify-center text-primary mb-2">
+<span class="material-symbols-outlined text-[24px]">public</span>
+</div>
+<div class="font-label-caps text-label-caps text-primary tracking-wider uppercase text-[11px]">STAGE 01 // NAVIGATION</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold text-lg">Global 3D Exploration</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Pan, zoom, and pitch across high-resolution globe meshes with real-time solar terminator coordinates, latitude lines, and orbital track overlays.
+            </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20 font-telemetry-sm text-telemetry-sm text-outline flex items-center justify-between">
+<span class="">Projection</span>
+<span class="text-on-surface font-medium">WGS84 EPSG:4326</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="p-8 rounded-2xl bg-surface-container/40 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute -right-4 -top-4 font-telemetry-lg text-7xl font-black text-surface-container-highest/20 select-none pointer-events-none group-hover:text-primary/10 transition-colors">02</div>
+<div class="flex flex-col gap-4 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-tertiary/20 border border-tertiary/30 flex items-center justify-center text-tertiary mb-2">
+<span class="material-symbols-outlined text-[24px]">satellite_alt</span>
+</div>
+<div class="font-label-caps text-label-caps text-tertiary tracking-wider uppercase text-[11px]">STAGE 02 // HARVEST</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold text-lg">Target Swath Acquisition</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Select an AOI boundary box. Query multi-temporal catalogs of Copernicus Sentinel-2 MSI and USGS Landsat-9 OLI-2 with custom cloud masks.
+            </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20 font-telemetry-sm text-telemetry-sm text-outline flex items-center justify-between">
+<span class="">Latency</span>
+<span class="text-tertiary font-medium">&lt; 1.2s Ingest</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="p-8 rounded-2xl bg-surface-container/40 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute -right-4 -top-4 font-telemetry-lg text-7xl font-black text-surface-container-highest/20 select-none pointer-events-none group-hover:text-primary/10 transition-colors">03</div>
+<div class="flex flex-col gap-4 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-secondary-container/20 border border-secondary-container/40 flex items-center justify-center text-secondary mb-2">
+<span class="material-symbols-outlined text-[24px]">auto_fix_high</span>
+</div>
+<div class="font-label-caps text-label-caps text-secondary tracking-wider uppercase text-[11px]">STAGE 03 // TRANSFORM</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold text-lg">Digital Image Processing</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Execute spatial convolution kernels, frequency transforms, Otsu adaptive thresholding, and morphological opening/closing with instant canvas preview.
+            </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20 font-telemetry-sm text-telemetry-sm text-outline flex items-center justify-between">
+<span class="">Engine</span>
+<span class="text-on-surface font-medium">WebGL Acceleration</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="p-8 rounded-2xl bg-surface-container/40 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+<div class="absolute -right-4 -top-4 font-telemetry-lg text-7xl font-black text-surface-container-highest/20 select-none pointer-events-none group-hover:text-primary/10 transition-colors">04</div>
+<div class="flex flex-col gap-4 relative z-10">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed/20 border border-primary-fixed/30 flex items-center justify-center text-primary-fixed mb-2">
+<span class="material-symbols-outlined text-[24px]">analytics</span>
+</div>
+<div class="font-label-caps text-label-caps text-primary-fixed tracking-wider uppercase text-[11px]">STAGE 04 // INFERENCE</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-semibold text-lg">Radiometric Analytics</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Inspect RGB/spectral channel histograms, quantify vegetation index (NDVI), compute Peak Signal-to-Noise Ratio (PSNR), and export GeoTIFF rasters.
+            </p>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant/20 font-telemetry-sm text-telemetry-sm text-outline flex items-center justify-between">
+<span class="">Telemetry</span>
+<span class="text-primary-fixed font-medium">PSNR &amp; NDVI Verified</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Core DIP Modules Grid (3x2 Matrix) -->
+<section class="relative w-full px-gutter-desktop py-28">
+<div class="max-w-7xl mx-auto flex flex-col gap-14">
+<div class="flex flex-col gap-3">
+<div class="font-label-caps text-label-caps uppercase text-tertiary tracking-widest flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span class="">INTEGRATED ALGORITHMIC SUITE</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<h2 class="font-headline-lg text-headline-lg text-on-surface text-3xl font-bold tracking-tight">Core Scientific Processing Modules</h2>
+<span class="font-telemetry-sm text-telemetry-sm text-outline">Real-time GPU Shaders // IEEE-compliant kernels</span>
+</div>
+</div>
+<!-- 3x2 Scientific Grid with Open Breathing Space -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Module 1: Image Enhancement -->
+<div class="p-8 rounded-2xl bg-surface-container/50 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="p-2.5 rounded-xl bg-surface-container-highest/80 border border-primary/20 text-primary">
+<span class="material-symbols-outlined text-[22px]">tune</span>
+</div>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-full bg-primary-container/15 text-primary border border-primary/30">
+                O(N) HistEq
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-semibold group-hover:text-primary transition-colors mt-1">
+              Radiometric Enhancement
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Contrast limited adaptive histogram equalization (CLAHE), gamma transformation, and linear dynamic range expansion across low-light polar passes.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap gap-2">
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">CLAHE 2.0</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Gamma λ=1.8</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Min-Max</span>
+</div>
+</div>
+<!-- Module 2: Noise Filtration -->
+<div class="p-8 rounded-2xl bg-surface-container/50 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="p-2.5 rounded-xl bg-surface-container-highest/80 border border-tertiary/20 text-tertiary">
+<span class="material-symbols-outlined text-[22px]">blur_circular</span>
+</div>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-full bg-tertiary/15 text-tertiary border border-tertiary/30">
+                Spatial 5x5 Kernel
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-semibold group-hover:text-tertiary transition-colors mt-1">
+              Noise Filtration &amp; Denoising
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Targeted suppression of SAR speckle and atmospheric transmission artifacts using Gaussian blur, median filters, and Non-Local Means.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap gap-2">
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Gaussian σ=1.4</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Median Salt-Pepper</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Bilateral</span>
+</div>
+</div>
+<!-- Module 3: Edge Detection -->
+<div class="p-8 rounded-2xl bg-surface-container/50 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="p-2.5 rounded-xl bg-surface-container-highest/80 border border-secondary/20 text-secondary">
+<span class="material-symbols-outlined text-[22px]">grain</span>
+</div>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-full bg-secondary-container/15 text-secondary border border-secondary/30">
+                Gradient ∇f
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-semibold group-hover:text-secondary transition-colors mt-1">
+              Edge &amp; Feature Extraction
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Delineate coastlines, urban grids, and geological faults with Sobel gradient magnitude, Canny hysteresis, and Laplacian zero-crossing detectors.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap gap-2">
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Canny High/Low</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Sobel Gx/Gy</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Prewitt</span>
+</div>
+</div>
+<!-- Module 4: Segmentation -->
+<div class="p-8 rounded-2xl bg-surface-container/50 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="p-2.5 rounded-xl bg-surface-container-highest/80 border border-primary/20 text-primary">
+<span class="material-symbols-outlined text-[22px]">donut_large</span>
+</div>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-full bg-primary-container/15 text-primary border border-primary/30">
+                k-Means (k=5)
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-semibold group-hover:text-primary transition-colors mt-1">
+              Land Cover Segmentation
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Partition complex earth swaths into discrete surface classes: open water, canopy, bare soil, and impervious infrastructure via Otsu variance.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap gap-2">
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Otsu Max Variance</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Adaptive Mask</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Superpixels</span>
+</div>
+</div>
+<!-- Module 5: Mathematical Morphology -->
+<div class="p-8 rounded-2xl bg-surface-container/50 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="p-2.5 rounded-xl bg-surface-container-highest/80 border border-tertiary/20 text-tertiary">
+<span class="material-symbols-outlined text-[22px]">filter_b_and_w</span>
+</div>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-full bg-tertiary/15 text-tertiary border border-tertiary/30">
+                Structuring Element 3x3
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-semibold group-hover:text-tertiary transition-colors mt-1">
+              Morphological Analysis
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Perform erosion, dilation, structural opening, and closing to eliminate sensor dropouts, fill runway cavities, and isolate geometric targets.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap gap-2">
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Binary Dilation</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Top-Hat Transform</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">Skeletonize</span>
+</div>
+</div>
+<!-- Module 6: Change Detection & Spectrometry -->
+<div class="p-8 rounded-2xl bg-surface-container/50 backdrop-blur-md border border-outline-variant/20 hover:border-primary/40 transition-all duration-300 flex flex-col justify-between group">
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="p-2.5 rounded-xl bg-surface-container-highest/80 border border-secondary/20 text-secondary">
+<span class="material-symbols-outlined text-[22px]">compare</span>
+</div>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-full bg-secondary-container/15 text-secondary border border-secondary/30">
+                Δt Multi-temporal
+              </span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface text-lg font-semibold group-hover:text-secondary transition-colors mt-1">
+              Spectral Radiometry &amp; Delta
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed text-[13px]">
+              Multispectral index derivation: (NIR-Red)/(NIR+Red) for NDVI, NDWI moisture tracking, and absolute radiometric difference image generation.
+            </p>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap gap-2">
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">NDVI Matrix</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">PSNR &gt; 38.4 dB</span>
+<span class="font-telemetry-sm text-[11px] px-2.5 py-1 rounded-md bg-surface-container-highest/40 text-on-surface-variant">SSIM 0.94</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Comparison Demonstration Banner -->
+<section class="relative w-full px-gutter-desktop py-28 pb-32">
+<div class="max-w-7xl mx-auto p-12 md:p-16 rounded-3xl bg-surface-container-low/70 backdrop-blur-xl border border-outline-variant/30 shadow-2xl relative overflow-hidden flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+<!-- Visual Split-Screen Comparison Teaser -->
+<div class="w-full lg:w-1/2 relative h-80 rounded-2xl overflow-hidden border border-primary/30 group select-none shadow-[0_0_24px_rgba(6,182,212,0.1)]">
+<!-- Before: Raw Optical -->
+<img class="absolute inset-0 w-full h-full object-cover" data-alt="Satellite top-down photograph of coastal city and harbor with sea water, docklands, container ship terminals, raw atmospheric haze, and soft lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgd68WtpYssyXN_rj4wflf144k4e5k1F9Q7YcP9w4WSupYOYhSC19XUkznh4NdDb-rd7eaBQo3LYYZbOu_BRTu2KP13tz9CWCfS8rYMMTERg8abw-g6p-wP4o79LUmshcmAsvv2KcsZSPcpYjtaQY187knI0RNEuE7QI_7Imv6v3aHCyrExIQfNmQQrq3ZIyHkESV0b4eYbWAD2MLCMH-PuQPoiVwdWtw8XXyR1EYbLJHZh2fT2ekRRQ">
+<!-- After: Edge + Segment Filter (Clipped) -->
+<div class="absolute inset-0 w-1/2 overflow-hidden border-r border-primary shadow-[0_0_15px_rgba(6,182,212,0.8)]" id="sliderRevealMask">
+<img class="absolute inset-0 w-[200%] max-w-none h-full object-cover" data-alt="Digital image processed satellite view of coastal port showing high-contrast neon cyan edge detection, vectorized shipping routes, green segmented vegetation patches, and dark filtered water surfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnQj59OCMiievIxfMLp6-Rcxr5BHg6V0IJP6-la8_o_U_SymkOdemUKGF-laTHjkFSQXbsSTnltADJhbtJEm6FNpUS6Te-C3bH46VZae7zjV9DFqaGMiQzFD8jmFqUXsRDQ1NCckayMNKRH_VvnGItHMUwXmuavjwtNqJzdgh7ci4ecALjeOzQYQviPRcojeBmzdpyzuFxQeSONkz53gSOTdtOfaBafO2sktRdCrj_yEzKWr7SGeOsLw">
+</div>
+<!-- Center Handle -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-surface-container-lowest/90 border border-primary text-primary flex items-center justify-center shadow-[0_0_16px_rgba(6,182,212,0.6)] cursor-ew-resize pointer-events-none" id="sliderHandle">
+<span class="material-symbols-outlined text-[18px]">swap_horiz</span>
+</div>
+<!-- Labels -->
+<div class="absolute bottom-4 left-4 bg-surface-container-lowest/80 backdrop-blur px-3 py-1 rounded-md border border-outline-variant/30 font-telemetry-sm text-[11px] text-on-surface">
+          PROCESSED: CANNY + NDVI
+        </div>
+<div class="absolute bottom-4 right-4 bg-surface-container-lowest/80 backdrop-blur px-3 py-1 rounded-md border border-outline-variant/30 font-telemetry-sm text-[11px] text-outline">
+          RAW LEVEL-1C FEED
+        </div>
+</div>
+<!-- Action & Mission Statement -->
+<div class="w-full lg:w-1/2 flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-highest/50 border border-primary/20 w-fit">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-primary uppercase text-[11px]">READY FOR INGESTION</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface text-3xl md:text-4xl font-bold tracking-tight leading-tight">
+          Command Orbital Sensors. <br class="hidden sm:inline">Delineate the Invisible.
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed text-[15px]">
+          Connect directly to ESA Copernicus Open Access Hub and USGS EarthExplorer API gateways. Apply scientific kernels without installing multi-gigabyte desktop software.
+        </p>
+<div class="flex flex-wrap items-center gap-4 pt-2">
+<a class="px-8 py-3.5 rounded-xl bg-primary-container text-on-primary font-headline-sm text-headline-sm font-semibold tracking-tight shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:bg-primary transition-all duration-300" data-path="earth-explorer" href="#">
+            Launch 3D Explorer
+          </a>
+<a class="px-8 py-3.5 rounded-xl bg-surface-container-high/60 hover:bg-surface-container-highest text-primary border border-primary/30 font-headline-sm text-headline-sm font-medium transition-all duration-300" data-path="dip-workspace" href="#">
+            Open DIP Workspace
+          </a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Interactive Earth Globe Simulation & Slider Script -->
+<script>
+  (function () {
+    const canvas = document.getElementById('earthCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let width, height, centerX, centerY, radius;
+    let rotation = 0;
+    let isDragging = false;
+    let lastX = 0;
+    let autoRotate = true;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = canvas.width = rect.width * (window.devicePixelRatio || 1);
+      height = canvas.height = rect.height * (window.devicePixelRatio || 1);
+      centerX = width / 2;
+      centerY = height / 2;
+      radius = Math.min(width, height) * 0.38;
+    }
+
+    // Interactive Drag & Click-to-Pin Controls
+    let downPos = null;
+    canvas.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastX = e.clientX;
+      downPos = { x: e.clientX, y: e.clientY, time: Date.now() };
+      autoRotate = false;
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (isDragging && downPos) {
+        const dx = e.clientX - downPos.x;
+        const dy = e.clientY - downPos.y;
+        const dt = Date.now() - downPos.time;
+        // If moved less than 8px and released quickly, it's a click to pin!
+        if (Math.hypot(dx, dy) <= 8 && dt < 500) {
+          const rect = canvas.getBoundingClientRect();
+          const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
+          const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
+          const offX = clickX - centerX;
+          const offY = clickY - centerY;
+          const dist = Math.hypot(offX, offY);
+
+          if (dist <= radius) {
+            // Click is on the Earth sphere!
+            const sinLat = Math.max(-1, Math.min(1, -offY / radius));
+            const lat = Math.asin(sinLat) * (180 / Math.PI);
+            const cosLat = Math.cos(lat * Math.PI / 180);
+            const sinLon = Math.max(-1, Math.min(1, offX / (radius * Math.max(0.01, cosLat))));
+            const lonAngle = Math.asin(sinLon);
+            let lon = ((lonAngle - rotation) * (180 / Math.PI)) % 360;
+            if (lon > 180) lon -= 360;
+            if (lon < -180) lon += 360;
+
+            window.location.href = `explorer.html?lat=${lat.toFixed(4)}&lon=${lon.toFixed(4)}`;
+            return;
+          }
+        }
+      }
+      isDragging = false;
+      downPos = null;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const delta = e.clientX - lastX;
+      rotation += delta * 0.005;
+      lastX = e.clientX;
+    });
+
+    // Preset Pinpoints on Globe [Lat, Lon, Label]
+    const pins = [
+      { lat: 35.6762, lon: 139.6503, label: "TOKYO" },
+      { lat: 31.1443, lon: -3.9780, label: "SAHARA" },
+      { lat: -3.4653, lon: -62.2159, label: "AMAZON" },
+      { lat: 46.5028, lon: 8.0314, label: "ALPS" },
+      { lat: 37.7749, lon: -122.4194, label: "SAN FRANCISCO" },
+      { lat: 1.3521, lon: 103.8198, label: "SINGAPORE" }
+    ];
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+
+      if (autoRotate && !isDragging) {
+        rotation += 0.0018;
+      }
+
+      // 1. Atmospheric Outer Glow
+      const glowGrad = ctx.createRadialGradient(centerX, centerY, radius * 0.9, centerX, centerY, radius * 1.25);
+      glowGrad.addColorStop(0, 'rgba(6, 182, 212, 0.28)');
+      glowGrad.addColorStop(0.5, 'rgba(6, 182, 212, 0.08)');
+      glowGrad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius * 1.25, 0, Math.PI * 2);
+      ctx.fillStyle = glowGrad;
+      ctx.fill();
+
+      // 2. Globe Dark Base Sphere
+      const earthGrad = ctx.createRadialGradient(centerX - radius * 0.35, centerY - radius * 0.35, radius * 0.1, centerX, centerY, radius);
+      earthGrad.addColorStop(0, '#17223b');
+      earthGrad.addColorStop(0.7, '#0b1122');
+      earthGrad.addColorStop(1, '#05070e');
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      ctx.fillStyle = earthGrad;
+      ctx.fill();
+
+      // Globe Rim Edge
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(76, 215, 246, 0.4)';
+      ctx.stroke();
+
+      // 3. Render Latitude Wireframe Rings
+      ctx.lineWidth = 1;
+      const lats = [-60, -30, 0, 30, 60];
+      lats.forEach(lat => {
+        const yOffset = Math.sin((lat * Math.PI) / 180) * radius;
+        const rLat = Math.cos((lat * Math.PI) / 180) * radius;
+        ctx.beginPath();
+        ctx.ellipse(centerX, centerY - yOffset, rLat, rLat * 0.22, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = lat === 0 ? 'rgba(76, 215, 246, 0.25)' : 'rgba(134, 147, 151, 0.12)';
+        ctx.stroke();
+      });
+
+      // 4. Render Longitude Meridian Lines (Rotating)
+      const numLongs = 16;
+      for (let i = 0; i < numLongs; i++) {
+        const angle = rotation + (i * Math.PI) / (numLongs / 2);
+        const cos = Math.cos(angle);
+        const sin = Math.sin(angle);
+
+        // Only draw hemisphere facing viewer
+        if (cos > 0) {
+          ctx.beginPath();
+          ctx.ellipse(centerX, centerY, radius * cos, radius, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(76, 215, 246, ${0.05 + cos * 0.15})`;
+          ctx.stroke();
+        }
+      }
+
+      // 5. Draw Orbit Ring Trajectory (Inclined Orbit)
+      ctx.save();
+      ctx.translate(centerX, centerY);
+      ctx.rotate(-0.4);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, radius * 1.35, radius * 0.55, 0, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(78, 222, 163, 0.45)';
+      ctx.setLineDash([4, 6]);
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Orbiting Satellite Beacon on Path
+      const satTime = Date.now() * 0.0006;
+      const satX = Math.cos(satTime) * radius * 1.35;
+      const satY = Math.sin(satTime) * radius * 0.55;
+
+      ctx.beginPath();
+      ctx.arc(satX, satY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#4edea3';
+      ctx.shadowColor = '#4edea3';
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Small satellite crosshair
+      ctx.strokeStyle = 'rgba(78, 222, 163, 0.6)';
+      ctx.strokeRect(satX - 6, satY - 6, 12, 12);
+      ctx.restore();
+
+      // 6. Draw Geo Pinpoints & Target Reticles
+      pins.forEach(pin => {
+        const lonRad = ((pin.lon * Math.PI) / 180) + rotation;
+        const latRad = (pin.lat * Math.PI) / 180;
+
+        const cosLon = Math.cos(lonRad);
+        const sinLon = Math.sin(lonRad);
+
+        // Facing viewer test
+        if (cosLon > -0.1) {
+          const px = centerX + Math.cos(latRad) * sinLon * radius;
+          const py = centerY - Math.sin(latRad) * radius;
+
+          // Reticle Ring
+          ctx.beginPath();
+          ctx.arc(px, py, 5, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(76, 215, 246, 0.9)';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Reticle center dot
+          ctx.beginPath();
+          ctx.arc(px, py, 2, 0, Math.PI * 2);
+          ctx.fillStyle = '#4cd7f6';
+          ctx.fill();
+
+          // Reticle Label
+          ctx.font = '10px "JetBrains Mono"';
+          ctx.fillStyle = 'rgba(223, 225, 246, 0.85)';
+          ctx.fillText(pin.label, px + 8, py - 3);
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+
+    // Preset Target helper & Direct Navigator
+    window.setTargetLocation = function(label, lat, lon) {
+      window.location.href = `explorer.html?lat=${lat.toFixed(4)}&lon=${lon.toFixed(4)}`;
+    };
+
+    // Locate Search Bar Navigation
+    const locateBtn = document.getElementById('locateBtn');
+    const geoInput = document.getElementById('geoQueryInput');
+    const handleLocate = () => {
+      const q = geoInput ? geoInput.value.trim() : '';
+      if (!q) {
+        window.location.href = 'explorer.html';
+        return;
+      }
+      const coordsMatch = q.match(/(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)/);
+      if (coordsMatch) {
+        window.location.href = `explorer.html?lat=${parseFloat(coordsMatch[1]).toFixed(4)}&lon=${parseFloat(coordsMatch[2]).toFixed(4)}`;
+      } else {
+        window.location.href = `explorer.html?q=${encodeURIComponent(q)}`;
+      }
+    };
+    locateBtn?.addEventListener('click', handleLocate);
+    geoInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLocate();
+    });
+
+    // Before/After Slider Interaction in Preview Card
+    const revealMask = document.getElementById('sliderRevealMask');
+    const handle = document.getElementById('sliderHandle');
+    const container = revealMask ? revealMask.parentElement : null;
+
+    if (container && revealMask && handle) {
+      let isSliding = false;
+      const onMove = (clientX) => {
+        const rect = container.getBoundingClientRect();
+        let pos = (clientX - rect.left) / rect.width;
+        pos = Math.max(0.05, Math.min(0.95, pos));
+        revealMask.style.width = (pos * 100) + '%';
+        handle.style.left = (pos * 100) + '%';
+      };
+
+      container.addEventListener('mousedown', (e) => {
+        isSliding = true;
+        onMove(e.clientX);
+      });
+      window.addEventListener('mouseup', () => isSliding = false);
+      window.addEventListener('mousemove', (e) => {
+        if (isSliding) onMove(e.clientX);
+      });
+
+      // Mobile Touch Support
+      container.addEventListener('touchmove', (e) => {
+        if (e.touches && e.touches[0]) onMove(e.touches[0].clientX);
+      });
+    }
+
+    // Interactive navigation routing
+    document.querySelectorAll('[data-path]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const p = el.getAttribute('data-path');
+        if (p === 'earth-explorer') {
+          e.preventDefault();
+          window.location.href = 'explorer.html';
+        } else if (p === 'dip-workspace') {
+          e.preventDefault();
+          window.location.href = 'workspace.html';
+        } else if (p === 'processing-history') {
+          e.preventDefault();
+          window.location.href = 'history.html';
+        }
+      });
+    });
+
+  })();
+</script></main><footer class="w-full bg-surface-container-lowest/90 border-t border-outline-variant/30 py-space-lg"><div class="w-full px-gutter-desktop flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex items-center gap-space-md"><span class="font-label-caps text-label-caps text-on-surface-variant">© 2025 EarthVision Geospatial Systems Ltd.</span><span class="font-telemetry-sm text-telemetry-sm text-outline">SEC-CLASS: CONFIDENTIAL // LEO-OPS</span></div><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-xs font-telemetry-sm text-telemetry-sm text-on-surface-variant"><span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span><span class="">ORBITAL SYNC NOMINAL</span></div><div class="flex items-center gap-space-xs font-telemetry-sm text-telemetry-sm text-on-surface-variant"><span class="material-symbols-outlined text-[16px] text-primary">lock_clock</span><span class="">GEO-EPOCH: WGS84</span></div></div></div></footer>
+
+
+
+</body></html>
