@@ -36,7 +36,11 @@ algos_to_test = [
     ("16_rgb_channel_g", "rgb_channel", {"channel": "g"}),
     ("17_sobel", "sobel", {"ksize": 3}),
     ("18_canny", "canny", {"low": 100, "high": 200}),
-    ("19_vegetation_proxy", "vegetation_proxy", {})
+    ("19_vegetation_proxy", "vegetation_proxy", {}),
+    ("20_erosion", "erosion", {"ksize": 5, "iterations": 1}),
+    ("21_dilation", "dilation", {"ksize": 5, "iterations": 1}),
+    ("22_morph_open", "morph_open", {"ksize": 5}),
+    ("23_morph_close", "morph_close", {"ksize": 5})
 ]
 
 for filename, algo, params in algos_to_test:

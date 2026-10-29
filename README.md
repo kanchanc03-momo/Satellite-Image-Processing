@@ -4,6 +4,77 @@ EarthVision is a production-grade Earth observation and satellite image processi
 
 ---
 
+## 📸 Application Interface Showcase
+
+| 3D CesiumJS Earth Explorer | Interactive DIP Studio Workspace |
+|:---:|:---:|
+| ![Earth Explorer](stitch_orbitview_analyzer_landing_page/earthvision_earth_explorer_spacious/screen.png) | ![DIP Studio Workspace](stitch_orbitview_analyzer_landing_page/earthvision_digital_image_processing_workspace_clean_spacious/screen.png) |
+| *Full 360° virtual globe with live solar angles, diurnal shadow terminator, and coordinate lock* | *Dual-layer split comparison slider, live pixel inspection, 4-channel histograms & scientific metrics* |
+
+---
+
+## 🔬 Core Scientific Modules & Image Processing Results
+
+### 1. Radiometric & Contrast Enhancement
+Enhances optical dynamic range, reveals details in deep shadows, and balances solar illumination variations.
+
+| Original Raw Swath | CLAHE 2.0 (Local Adaptive) | Global Histogram Equalization | Percentile Contrast Stretch |
+|:---:|:---:|:---:|:---:|
+| ![Original](screenshots/00_original.png) | ![CLAHE](screenshots/05_clahe.png) | ![HistEq](screenshots/04_hist_eq.png) | ![Stretch](screenshots/06_contrast_stretch.png) |
+| *Baseline Esri satellite swath* | *Local tile histogram clipping* | *Y-channel CDF flattening* | *p2–p98 percentile stretch* |
+
+---
+
+### 2. Spatial Filtering & Noise Reduction
+Suppresses sensor transmission artifacts, Gaussian noise, and atmospheric turbulence while re-sharpening blurred features.
+
+| Original Raw Swath | Gaussian Spatial Smoothing | Median Filter (Denoise) | Unsharp Mask Sharpening |
+|:---:|:---:|:---:|:---:|
+| ![Original](screenshots/00_original.png) | ![Gaussian](screenshots/07_gaussian.png) | ![Median](screenshots/08_median.png) | ![Sharpen](screenshots/10_sharpen.png) |
+| *Input with sensor noise* | *Isotropic 2D normal distribution* | *Non-linear impulse noise removal* | *High-frequency detail boost* |
+
+---
+
+### 3. Edge & Feature Extraction
+Delineates geological faults, coastal boundaries, canal edges, breakwaters, and urban transportation grids.
+
+| Original Raw Swath | Sobel First-Order Gradient Magnitude | Canny Multi-Stage Hysteresis Edges |
+|:---:|:---:|:---:|
+| ![Original](screenshots/00_original.png) | ![Sobel](screenshots/17_sobel.png) | ![Canny](screenshots/18_canny.png) |
+| *True-color satellite capture* | *$\|\nabla f\| = \sqrt{G_x^2 + G_y^2}$ discrete derivative* | *Non-max suppression + dual threshold hysteresis* |
+
+---
+
+### 4. Land Cover Segmentation & Thresholding
+Partitions complex satellite scenes into discrete thematic surface classes (water bodies, built-up infrastructure, soil, and vegetation).
+
+| Otsu Optimal Variance Threshold | Adaptive Local Threshold | K-Means Unsupervised Clustering (k=4) | Otsu Mask Region Highlight |
+|:---:|:---:|:---:|:---:|
+| ![Otsu](screenshots/11_otsu_threshold.png) | ![Adaptive](screenshots/12_adaptive_threshold.png) | ![K-Means](screenshots/13_kmeans.png) | ![Region](screenshots/14_region_highlight.png) |
+| *Max inter-class variance $\sigma_B^2$* | *Gaussian local neighborhood cutoff* | *3D RGB color clustering with % legend* | *Cyan overlay on segmented landmass* |
+
+---
+
+### 5. Mathematical Morphology
+Cleans binary/grayscale masks, strips isolated transmission artifacts, fills structural cavities, and bridges fragmented linear features.
+
+| Morphological Erosion | Morphological Dilation | Morphological Opening | Morphological Closing |
+|:---:|:---:|:---:|:---:|
+| ![Erosion](screenshots/20_erosion.png) | ![Dilation](screenshots/21_dilation.png) | ![Opening](screenshots/22_morph_open.png) | ![Closing](screenshots/23_morph_close.png) |
+| *Strips noise & shrinks objects: $A \ominus B$* | *Bridges gaps & expands objects: $A \oplus B$* | *Erosion $\rightarrow$ Dilation (cleans specks)* | *Dilation $\rightarrow$ Erosion (fills holes)* |
+
+---
+
+### 6. Spectral Radiometry & Band Analysis
+Decomposes multispectral optical bands and derives visible-spectrum vegetation indices.
+
+| True-Color RGB Original | Luminance Grayscale | Extracted Green Band (560nm) | Excess Green Vegetation Proxy |
+|:---:|:---:|:---:|:---:|
+| ![Original](screenshots/00_original.png) | ![Grayscale](screenshots/15_grayscale.png) | ![Green Band](screenshots/16_rgb_channel_g.png) | ![Vegetation](screenshots/19_vegetation_proxy.png) |
+| *3-channel optical tensor* | *ITU-R BT.601 weighted luminance* | *Single-channel spectral reflectance* | *Excess Green ($2G - R - B$) vegetation proxy* |
+
+---
+
 ## 🏗️ Architecture & Technology Stack
 
 | Layer | Technology | Details |
@@ -14,8 +85,8 @@ EarthVision is a production-grade Earth observation and satellite image processi
 | **Imagery Basemap** | Esri World Imagery (True-Color RGB) | Real satellite tiles (0.5m – 1.0m / pixel) |
 | **Night Lights** | NASA GIBS VIIRS Black Marble | Blended dynamically on the night-side terminator |
 | **State Management** | Reactive `EarthVisionState` Store | Cross-page synchronization + browser `localStorage` persistence |
-| **Build & Dev Proxy** | Vite v5 | Serves frontend on `:3000`, proxies `/api/*` to `:8000` |
-| **Backend Framework** | FastAPI (Python 3.11+) | Asynchronous REST gateway running on port `:8000` |
+| **Build & Dev Proxy** | Multi-threaded Python Dev Server / Vite v5 | Serves frontend on `:3000`, proxies `/api/*` to `:8080` |
+| **Backend Framework** | FastAPI (Python 3.10+) | Asynchronous REST gateway running on port `:8080` |
 | **DIP & Vision Engine** | OpenCV 4.10+ & scikit-image | 24 algorithms, multi-stage pipeline chaining, PSNR/SSIM, Shannon entropy |
 
 ---
@@ -24,35 +95,20 @@ EarthVision is a production-grade Earth observation and satellite image processi
 
 ### 1. Prerequisites
 - Python 3.10+
-- Node.js 18+ (for frontend dev server/build)
+- (Optional) Node.js 18+ (if building via Vite)
 
-### 2. Backend Setup
+### 2. Launch Full Application (One-Click)
 ```bash
-# Navigate to backend directory
+# Terminal 1: Start FastAPI Backend (Port 8080)
 cd backend
+python -m uvicorn main:app --host 0.0.0.0 --port 8080
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Run FastAPI backend
-uvicorn main:app --host 0.0.0.0 --port 8000
+# Terminal 2: Start Multi-threaded Frontend Server (Port 3000)
+python dev_server.py
 ```
-Backend will be live at `http://localhost:8000`.
+Open **`http://localhost:3000`** in your browser. All `/api/*` calls will be automatically proxied to `http://localhost:8080`.
 
-### 3. Frontend Setup
-```bash
-# Navigate to frontend directory
-cd frontend
-
-# Install Vite dev toolchain
-npm install
-
-# Start Vite dev server with proxy to backend
-npm run dev
-```
-Open `http://localhost:3000` in your browser. All `/api/*` calls will be automatically proxied to `http://localhost:8000`.
-
-### 4. Running Automated Tests
+### 3. Running Automated Tests
 ```bash
 pytest backend/tests/ -v
 ```
@@ -63,7 +119,7 @@ pytest backend/tests/ -v
 
 All algorithms clamp to these ranges, accept both color and single-channel inputs, and preserve spatial dimensions.
 
-| # | Algorithm Key | Parameters (Types, Clamped Ranges, Defaults) | Description / Math |
+| # | Algorithm Key | Parameters (Types, Clamped Ranges, Defaults) | Description / Mathematical Principle |
 |---|---|---|---|
 | 1 | `brightness` | `value` (-100 to 100, default 0) | Offset addition: `np.clip(img + value, 0, 255)` |
 | 2 | `contrast` | `value` (0.2 to 3.0, default 1.0) | Scaling relative to midtone (128): `128 + value * (img - 128)` |
@@ -85,8 +141,8 @@ All algorithms clamp to these ranges, accept both color and single-channel input
 | 18 | `canny` | `low` (0 to 255, def 100), `high` (0 to 255, def 200) | Two-threshold hysteresis edge detection (auto-swaps if reversed) |
 | 19 | `histogram` | *None* | Returns input unchanged with updated telemetry histograms |
 | 20 | `vegetation_proxy`| *None* | Excess Green Index ($2G - R - B$) RGB proxy (honestly labelled "not NDVI") |
-| 21 | `erosion` | `ksize` (3 to 15 odd, def 3), `iterations` (1 to 5, def 1) | Morphological erosion: strips noise and shrinks white boundaries |
-| 22 | `dilation` | `ksize` (3 to 15 odd, def 3), `iterations` (1 to 5, def 1) | Morphological dilation: expands regions and fills small gaps |
+| 21 | `erosion` | `ksize` (3 to 15 odd, def 3), `iterations` (1 to 5, def 1) | Morphological erosion: strips noise and shrinks white boundaries: $A \ominus B$ |
+| 22 | `dilation` | `ksize` (3 to 15 odd, def 3), `iterations` (1 to 5, def 1) | Morphological dilation: expands regions and fills small gaps: $A \oplus B$ |
 | 23 | `morph_open` | `ksize` (3 to 15 odd, def 3) | Morphological opening (Erosion $\rightarrow$ Dilation): eliminates speckles |
 | 24 | `morph_close` | `ksize` (3 to 15 odd, def 3) | Morphological closing (Dilation $\rightarrow$ Erosion): closes holes & bridges |
 
@@ -108,39 +164,15 @@ All algorithms clamp to these ranges, accept both color and single-channel input
     - **Entropy**: Shannon entropy in bits ($0.0 - 8.0$)
     - **Dynamic Range**: Minimum and maximum DN values
     - **PSNR & SSIM**: Computed via `scikit-image` for radiometric and filter algorithms (strictly `null` for segmentation and edge detectors).
-- **`POST /api/index`**: Explicitly rejects NDVI/NDWI requests because true Near-Infrared (NIR) bands are unavailable in standard RGB basemaps, directing users to `vegetation_proxy`.
 
 ---
 
-## ⚖️ Honest Labels & Imagery Disclosure
+## ⚖️ Scientific Rigor & Disclosures
 
-EarthVision strictly adheres to scientific honesty and eliminates all deceptive or simulated labels:
-- **Provider**: Esri World Imagery (True-Color RGB optical basemap).
-- **Spectral Depth**: 8-bit RGB (Bands: Red, Green, Blue). No fake "12-bit Sentinel-2 Level-1C" or "B4/B3/B2" claims.
-- **Telemetry**: Real elevation from ground elevation models, real solar elevation and zenith angles calculated from spherical trigonometry and local solar time.
-- **Vegetation**: Excess Green ($2G - R - B$) is clearly labelled as a **Vegetation Proxy (not NDVI)**.
-- **Clusters**: Segmented partitions are named neutral "Cluster 1 to K" with user rename fields, avoiding arbitrary automated classifications like "Dense Rainforest".
-
----
-
-## 🚢 Deployment Guide
-
-### Frontend Deployment (Vercel)
-The `frontend/` directory includes `vercel.json` configured with `/api/*` proxy rewrites and SPA fallbacks:
-```bash
-cd frontend
-vercel deploy --prod
-```
-Set the destination in `frontend/vercel.json` to your deployed backend URL.
-
-### Backend Deployment (Render / Docker)
-The `backend/Dockerfile` builds a production container on Debian slim with Mesa GL libraries:
-```bash
-cd backend
-docker build -t earthvision-backend:latest .
-docker run -p 8000:8000 -e ALLOWED_ORIGINS="*" earthvision-backend:latest
-```
-On Render, deploy as a **Web Service** pointing to the `backend/` directory using the Docker runtime.
+- **Imagery Provider**: Esri World Imagery (True-Color RGB optical basemap, 0.5m–1.0m/pixel GSD).
+- **Solar Geometry**: Sun elevation and zenith angles calculated live using Spencer/Cooper solar trigonometry equations.
+- **Vegetation Index**: Excess Green ($2G - R - B$) is rigorously labelled as an optical vegetation proxy (acknowledging true NDVI requires Near-Infrared sensors).
+- **Unsupervised Classes**: K-Means partitions are reported with exact pixel percentages and customizable class labels.
 
 ---
 
